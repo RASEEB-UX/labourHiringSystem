@@ -1,0 +1,108 @@
+/* Navbar styles */
+* {
+    margin: 0px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navbar {
+    background-color: hwb(0 97% 0%);
+    color: #fff;
+    border: 1px solid black;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 0px;
+
+    width: 100%
+}
+
+
+
+
+
+input[type="text"] {
+    padding: 5px;
+    display: block;
+    border-radius: 23px;
+    width: 30%;
+    margin: 0%;
+
+
+}
+
+.select-box {
+    width: 30%;
+    background-color: #ec1010;
+}
+
+.select-box select {
+    padding: 5px;
+    width: 100%
+}
+
+
+
+.navbar-links {
+    display: flex;
+    background-color: coral;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    transition-duration:1.2s;
+    text-align: center;
+    font-size: 1.2rem;
+    flex-direction: column;
+     height:0px;
+
+    overflow: hidden;
+
+}
+
+.navbar-links ul {
+    overflow: hidden;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links li {
+    margin-right: 20px;
+    text-decoration: none;
+    list-style-type: none;
+    color: wheat;
+}
+.navbar a{
+text-decoration: none;
+color:black;
+}
+.activator {
+    height: fit-content;
+    transition-duration:1.2s ;
+    
+}
+
+.togglebtn {
+    display: none;
+}
+
+@media (max-width: 500px) {
+    .togglebtn {
+        display: block;
+        font-size: 1.7rem;
+    }
+.showselect{
+    display: none;
+}
+.select-box{
+    width:100%;
+    width:98%;
+    margin: auto;
+}
+    input[type="text"] {
+        width: 67%
+    }
+}
