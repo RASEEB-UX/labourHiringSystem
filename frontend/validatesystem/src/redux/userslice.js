@@ -5,6 +5,7 @@ export const fetchdata = createAsyncThunk("datafetch", async () => {
 
     return response.data.user
 })
+
 const userSlice = createSlice({
     name: "workers",
     initialState: {
@@ -16,11 +17,18 @@ const userSlice = createSlice({
     reducers: {
         addUser: (state, action) => {
             state.users.unshift(action.payload);
+        },
+        updateUser: (state, action) => {
+            console.log("alladin")
+            console.log('dispatched action is ', action.payload)
+            const useradhaar = action.payload.adhaar;
+            state.users = state.users.filter((item) => item.adhaar !== useradhaar)
+            state.users.unshift(action.payload)
         }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchdata.fulfilled, (state, action) => {
-            console.log(action.payload)
+            // console.log(action.payload)
             if (action.payload.length !== 0) {
                 state.empty = false
 
@@ -44,6 +52,6 @@ const userSlice = createSlice({
             })
     }
 })
-export const { addUser } = userSlice.actions
+export const { addUser, updateUser } = userSlice.actions
 export default userSlice.reducer
 

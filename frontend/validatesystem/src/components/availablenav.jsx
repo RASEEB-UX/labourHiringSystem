@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import './availablenav.css'; // Import your CSS file for styling
+import React, { useState } from 'react'; // Import your CSS file for styling
 import { Link } from 'react-router-dom';
+//7C1WD1Q2D21W115CYZ8L5FPV twillio
 const Availablenav = () => {
  
 
@@ -10,7 +10,7 @@ const Availablenav = () => {
                 <div className="navbar-container">
                    
                     
-                        <input type="text" placeholder="Search by area." />
+                        <input type="text" id="searchbar" placeholder="Search by area." />
                     
                 
                     <div className="showselect select-box">

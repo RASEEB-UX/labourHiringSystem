@@ -34,6 +34,11 @@ const schema = mongoose.Schema({
         Required:true
 
     },
+    photoid:{
+        type:String,
+        Required:true
+
+    },
     category:{
         type:String,
         Required:true

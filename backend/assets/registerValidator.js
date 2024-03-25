@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const validator = (req, res, next) => {
+  
     const schema = Joi.object({
         username: Joi.string().min(3).max(20).required(),
         mobile: Joi.string().pattern(/^[0-9]{10}$/).required(),

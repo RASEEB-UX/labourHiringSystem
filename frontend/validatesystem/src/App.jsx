@@ -6,11 +6,13 @@ import Navbar from './components/navbar'
 import Home from './components/home'
 import Register from './components/register'
 import CardComponent from './components/card'
-import MyFormComponent from './components/form'
+import Update from './components/update'
 import { useDispatch } from 'react-redux'
 import { fetchdata } from './redux/userslice'
 import { useEffect } from 'react'
-import Availablenav from './components/availablenav'
+import Updateform from './components/updateform'
+import Cancel from './components/paymentfailure'
+import PaymentSuccess from './components/paymentsuccess'
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,9 +26,12 @@ function App() {
 
         <Route exact path="/" element={<Home />} />
         <Route exact path="/register" element={<Register />} />
-        <Route exact path="/availablenav" element={<Availablenav />} />
-        <Route exact path="/form" element={<MyFormComponent />} />
+        <Route exact path='/update' element={<Update/>}/>
+        <Route exact path='/updateform/:id' element={<Updateform/>}/>
         <Route exact path="/available/:ct" element={<CardComponent />} />
+        <Route exact path='/success' element={<PaymentSuccess/>}/>
+        <Route exact path='/cancel' element={<Cancel/>}/>
+
 
 
       </Routes>

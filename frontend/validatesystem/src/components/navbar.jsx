@@ -1,56 +1,98 @@
-import React from 'react'
-import './navbar.css'
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
-function Navbar() {
+import React, { useEffect, useState } from 'react';
+import { MdMenu } from 'react-icons/md'; // Importing MdMenu from react-icons/md
+import { Link, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
-  const [reached, setreached] = useState(false)
+  const location = useLocation()
+  const [ispath, setpath] = useState(false)
+  const changenav = () => {
+    let vwidth = window.innerWidth
+    let path = window.location.pathname
+    var userpath = /^\/available.*$/
+    //console.log('path is ', path)
+    // console.log('width is ', vwidth)
+    //console.log('width is correct', vwidth <= 512)
+    //console.log('path is correct', userpath.test(path))
+    if (vwidth <= 512 && userpath.test(path)) {
+      setpath(true)
+    }
+    else {
+      setpath(false)
+    }
+  }
   window.addEventListener('resize', () => {
-    let width = window.innerWidth;
-    let reqpath=/^\/available(\/.*)?$/
-    let path = window.location.pathname;
-    console.log(width+"" +path)
-    console.log('reached is ',reached)
-    
-    
-    console.log('path reached ',reqpath.test(path))
-    if (width <=500 && reqpath.test(path)) {
-      setreached(true)
-    }
-    else{
-      setreached(false)
-    }
-  }, true)
-  if(reached)
-  return null;
+    changenav()
+  })
+  useEffect(() => {
+    console.log("hi")
+    setIsOpen(false)
+    changenav()
+  }, [location])
+  if (ispath)
+    return null
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 position-sticky border rounded-1 border-dark">
-        <div className="container-fluid">
-          <h3 className="navbar-brand list-style-type-none">Labourhub</h3>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon "></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav m-auto mb-2 mb-lg-0 gap-5 px-5">
-              <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
-              </li>
-              <li className='nav-item'>Features</li>
-              <li className="nav-item">
-                <Link className="nav-link text-dark" to="/available/all">Available</Link>
-              </li>
-            </ul>
-            <form className="d-flex">
-
-              <button className="btn  bg-primary px-5 text-white" type="button" onClick={() => navigate('/register')}>Register</button>
-            </form>
-          </div>
+    <nav className=" border  border-black bg-white-700 min-h-12 text-black relative transition duration-500">
+      <div className="flex px-6 justify-between items-center transition-all duration-900 ">
+        {/* Logo */}
+        <div className="ml-1 flex items-center">
+          <img src="../../baby.jpg" alt="Logo" className="h-9 w-9 object-cover rounded-full mr-2" />
+          <span className="text-black font-bold text-lg whitespace-nowrap tracking-wider">LabourHub</span>
         </div>
-      </nav>
-    </div>
-  )
-}
 
-export default Navbar
+        {/* Toggle Button */}
+        <div className="block lg:hidden text-black" onClick={() => setIsOpen(!isOpen)}>
+          <MdMenu className="" size={56} /> {/* Using MdMenu icon */}
+
+        </div>
+
+        {/* Navigation Links */}
+
+        <ul className="hidden  text-2xl lg:flex justify-between h-full  items-center gap-12">
+          <li>
+            <Link to="/" className=" hover:text-blue-700">Home</Link>
+          </li>
+          <li>
+            <Link to="/features" className=" hover:text-blue-700">Features</Link>
+          </li>
+          <li>
+            <Link to="/available/all" className=" hover:text-blue-700">Availability</Link>
+          </li>
+          <li>
+            <Link to="/update" className=" hover:text-blue-700">update</Link>
+          </li>
+        </ul>
+
+        {/* Register Button */}
+
+        <button className="hidden lg:block px-4 py-2 bg-[#5295DB]  rounded-lg" onClick={() => navigate('/register')}>
+          Register
+        </button>
+
+      </div>
+      <div className={`${isOpen ? 'block  ' : 'hidden '} overflow-hidden h-fit bg-blue-200 w-full py-3 text-[1.4rem]`}>
+        <ul className=" w-full flex py-4 flex-col justify-center items-center gap-6">
+          <li>
+            <Link to="/" className=" hover:text-blue-900">Home</Link>
+          </li>
+          <li>
+            <Link to="/features" className=" hover:text-blue-900">Features</Link>
+          </li>
+          <li>
+            <Link to="/available/all" className=" hover:text-blue-9">Availability</Link>
+          </li>
+          <li>
+            <Link to="/update" className=" hover:text-blue-9">Update</Link>
+          </li>
+        </ul>
+        <button className='px-4 py-1 bg-[#5295DB] block rounded-lg mx-auto' onClick={() => navigate('/register')}>Register</button>
+      </div>
+
+
+    </nav>
+  );
+};
+
+export default Navbar;

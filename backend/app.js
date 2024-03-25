@@ -116,3 +116,42 @@ api-env-variable:CLOUDINARY_URL=cloudinary://821644143447538:N0QaN0b0V6wSwcua56z
   
 }
 */
+// Your AccountSID and Auth Token from console.twilio.com
+// Download the helper library from https://www.twilio.com/docs/node/install
+// Set environment variables for your credentials
+// Read more at http://twil.io/secure
+// const accountSid = "AC282affdd3ff0b44b9497a4bb77a08629";
+// const authToken = "45db13c6e5526bc2cd2aa3928f161c43";
+// const verifySid = "VAbb5d4c0b34f0271e0b3ada747d847b59";
+// const client = require("twilio")(accountSid, authToken);
+
+// client.verify.v2
+//   .services(verifySid)
+//   .verifications.create({ to: "+919797798243", channel: "sms" })
+//   .then((verification) => console.log(verification.status))
+//   .then(() => {
+//     const readline = require("readline").createInterface({
+//       input: process.stdin,
+//       output: process.stdout,
+//     });
+//     readline.question("Please enter the OTP:", (otpCode) => {
+//       client.verify.v2
+//         .services(verifySid)
+//         .verificationChecks.create({ to: "+919797798243", code: otpCode })
+//         .then((verification_check) => console.log(verification_check.status))
+//         .then(() => readline.close());
+//     });
+//   });
+  // Your AccountSID and Auth Token from console.twilio.com
+// const accountSid = process.env.twillioSid;
+// const authToken = process.env.twillioauthtoken;
+
+// const client = require('twilio')(accountSid, authToken);
+
+// client.messages
+//   .create({
+//     body: 'Hello from twilio-node',
+//     to: '+918493005166', // Text your number
+//     from: '+919797798243', // From a valid Twilio number
+//   })
+//   .then((message) => console.log(message.sid));
