@@ -24,7 +24,6 @@ setAadhaar(e.target.value)
   }
 
   return (
-    
     <div className="flex flex-col sm:flex-row justify-center gap-7 items-center h-screen w-full bg-[#D7E2F8] overflow-hidden">
         <div className='bg-pink  w-1/7 '>
             <img src="../../updatepic2.jpg" alt="" className=' border-black'/>
