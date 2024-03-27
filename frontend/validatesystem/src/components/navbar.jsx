@@ -34,7 +34,7 @@ const Navbar = () => {
   if (ispath)
     return null
   return (
-    <nav className=" border  border-black bg-white-700 min-h-12 text-black relative transition duration-500">
+    <nav className=" border  border-black bg-white-700 min-h-12 shadow-sm shadow-black text-black relative transition duration-500">
       <div className="flex px-6 justify-between items-center transition-all duration-900 ">
         {/* Logo */}
         <div className="ml-1 flex items-center">
@@ -72,11 +72,12 @@ const Navbar = () => {
         </button>
 
       </div>
-      <div className={`${isOpen ? 'block  ' : 'hidden '} overflow-hidden h-fit bg-blue-200 w-full py-3 text-[1.4rem]`}>
+      <div className={`${isOpen ? 'block  ' : 'hidden '} overflow-hidden h-fit bg-[#ffff] w-full py-3 text-[1.4rem]`}>
         <ul className=" w-full flex py-4 flex-col justify-center items-center gap-6">
           <li>
             <Link to="/" className=" hover:text-blue-900">Home</Link>
           </li>
+         
           <li>
             <Link to="/features" className=" hover:text-blue-900">Features</Link>
           </li>

@@ -97,15 +97,15 @@ function Card() {
                     <i className="fa-solid text-4xl p-1 min-[512px]:hidden fa-bars text-dark togglebtn" onClick={() => setIsOpen(!isOpen)}></i>
 
                 </div>
-                <div className={`navbar-links bg-gray-500 w-full py-5 flex flex-col justify-center items-center z-10 ${isOpen ? 'block' : 'hidden'}`}>
-                    <ul className='flex flex-col w-full justify-center items-center py-2 tracking-wide text-2xl'>
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/aboutus">About us</Link></li>
-                        <li><Link to="/register">Register</Link></li>
+                <div className={`navbar-links bg-blue-600 w-full py-9 flex flex-col justify-center items-center z-10 ${isOpen ? 'block' : 'hidden'}`}>
+                    <ul className='flex  flex-col py-6 w-full justify-center items-center  tracking-wide text-2xl'>
+                        <li className='my-5 text-3xl'><Link to="/">Home</Link></li>
+                        <li className='my-5 text-3xl'><Link to="/aboutus">About us</Link></li>
+                        <li className='my-5 text-3xl'><Link to="/register">Register</Link></li>
 
-                        <li><Link to="/available/all">Available</Link></li>
+                        <li className='my-5 text-3xl'><Link to="/available/all">Available</Link></li>
                     </ul>
-                    <div className="select-box w-full bg-black mx-auto">
+                    <div className="select-box w-full mx-auto">
                         <select onChange={handleSelectchange} value={selectval} className='w-full p-3 rounded-full'>
                             <option value="" >Filter By Category</option>
                             <option value="all">all </option>

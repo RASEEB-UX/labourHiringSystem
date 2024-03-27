@@ -72,7 +72,7 @@ function Updateform() {
                 <input className='my-2 p-2 w-full border border-black rounded-md' type="text" name="username" placeholder="Name" required onChange={handleChange} value={formData.username} />
                 <input className='my-2 p-2 border border-black rounded-md' type="text" name="age" placeholder="Age max-70yrs" required onChange={handleChange} value={formData.age} />
                 <input className='my-2 p-2 border border-black rounded-md' type="text" name="mobile" placeholder="Mobile Number" onChange={handleChange} required value={formData.mobile} />
-                <input className='my-2 p-2 border border-black rounded-md' type="text" name="adhaar" placeholder="Adhaar Number" onChange={handleChange} required value={formData.adhaar} />
+                <input className='my-2 p-2 border border-black rounded-md' type="text" name="adhaar" placeholder="Adhaar Number" readOnly  value={formData.adhaar} />
                 <input className='my-2 p-2 border border-black rounded-md' type="text" name="area" placeholder="Area where it will work" required value={formData.area} onChange={handleChange} />
                 <input className='my-2 p-2 border border-black rounded-md fileinput' type="file" name="photo" accept="image/*" required onChange={handleChange} />
                 <input className='my-2 p-2 border border-black rounded-md' type="text" name="skills" placeholder="Skills" required value={formData.skills} onChange={handleChange} />

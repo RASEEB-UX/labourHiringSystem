@@ -44,6 +44,7 @@ setAadhaar(e.target.value)
             value={aadhaar}
             onChange={handleChange}
             required
+            
           />
         </div>
         <div className="flex items-center justify-center">
