@@ -42,14 +42,17 @@ cloudinary.config({
   api_key: process.env.cloudapikey,
   api_secret:process.env.cloudsecretkey
 });
+app.get('/',(req,res,next)=>{
+res.send("it is working change url to /api/users/employees")
 
+})
 app.use('/api/users',userRouter)
 
 function generateOTP() {
 
 	// Declare a digits variable
 	// which stores all digits 
-	let digits = '*@#!01a2b3c4567y8l9';
+	let digits=  '*@#!01a2b3c4567y8l9';
 	let OTP = '';
 	for (let i = 0; i < 6; i++) {
 		OTP += digits[Math.floor(Math.random() * 10)];
