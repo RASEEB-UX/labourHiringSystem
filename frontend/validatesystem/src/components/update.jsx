@@ -1,61 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 const Update = () => {
-    const navigate=useNavigate()
+  const navigate = useNavigate()
   const [aadhaar, setAadhaar] = useState('');
-  const data=useSelector((state)=>state.workers.users)
-const [err,seterror]=useState('')
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const ispresent=data.find((item)=>item.adhaar==aadhaar)
-    console.log(ispresent)
-    if(!ispresent)
-    return seterror("user not found")
-    navigate(`/updateform/${ispresent.adhaar}`)
-    // Here you can perform any action with the Aadhaar value, such as sending it to a server
-    console.log('Aadhaar:', aadhaar);
-    // Reset the form after submission
-   // setAadhaar(event.target.value);
-  };
-  const handleChange=(e)=>{
-    seterror('')
-setAadhaar(e.target.value)
-  }
+  const data = useSelector((state) => state.workerStore.workers)
+  const [err, seterror] = useState('')
+
+  useEffect(() => {
+    console.log('inside useEffect')
+    const phoneEmailListener = (userObj) => {
+      console.log('script called me')
+      const { user_json_url, user_country_code, user_phone_number } = userObj;
+      console.log('received correct otp ')
+      const numberExists = data.find((item) => item.mobile == user_phone_number)
+      if (numberExists) {
+      navigate('/updateform',{state:{userPhoneNumber:user_phone_number}})
+      }
+      else {
+        alert('No record found with this phoneNumber')
+
+        // You can submit your form here or redirect user to post login dashboard page
+        // Send user_json_url to your backend to retrieve user info (i.e. country code and phone number) from this URL.
+      }
+    }
+      // Load external script
+      window.phoneEmailListener = phoneEmailListener;
+      const script = document.createElement('script');
+      script.src = 'https://www.phone.email/sign_in_button_v1.js';
+      script.async = true;
+      document.body.appendChild(script);
+      // Cleanup function
+      return () => {
+        document.body.removeChild(script);
+        delete window.phoneEmailListener;
+      };
+    
+  }, []);
+
+
 
   return (
-    <div className="flex flex-col sm:flex-row justify-center gap-7 items-center h-screen w-full bg-[#D7E2F8] overflow-hidden">
-        <div className='bg-pink  w-1/7 '>
-            <img src="../../updatepic2.jpg" alt="" className=' border-black'/>
+    <div className="flex flex-col sm:flex-row justify-center  gap-4 items-center min-h-[90vh] w-full bg-[#FDFDFD] ">
+      <div className='bg-pink sm:my-3 my-0 w-full sm:w-[60%]  min-h-[70vh] sm:h-[90vh] flex justify-center items-center '>
+        <img src="../../slide1.jpg" alt="" className='' />
+      </div>
+      <div div className={`w-full sm:w-[40%]  flex justify-center items-center min-h-[70vh] sm:h-[80vh]`}>
+        <div className="pe_signin_button" data-client-id="11913510434412196502">
         </div>
-      <form onSubmit={handleSubmit} className="bg-white border border-black w-[80%]  sm:w-auto  shadow-lg rounded px-8 pt-6 pb-8 mb-4 ">
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="aadhaar">
-            Aadhaar
-          </label>
-          <span className='text-sm text-center text-red-600'>
-            {err}
-            </span>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="aadhaar"
-            type="text"
-            placeholder="Enter Aadhaar Number"
-            value={aadhaar}
-            onChange={handleChange}
-            required
-            
-          />
-        </div>
-        <div className="flex items-center justify-center">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-            type="submit"
-          >
-            Submit
-          </button>
-        </div>
-      </form>
+      </div>
+
     </div>
   );
 };

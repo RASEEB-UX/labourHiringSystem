@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from './userslice'
+import workerReducer from './workerSlice'
+import userReducer from "./userSlice";
 const store = configureStore({
     reducer: {
-        workers: userReducer
+        workerStore: workerReducer,
+        userStore: userReducer,
     }
 
 })

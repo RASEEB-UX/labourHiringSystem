@@ -10,7 +10,6 @@ const Form = () => {
     username: '',
     adhaar: '',
     mobile: '',
-    skills: '',
     area: '',
     age: '',
     category: ''
@@ -78,10 +77,7 @@ const Form = () => {
           <label htmlFor="photo">Photo:</label>
           <input type="file" id="photo" name="photo" onChange={handleChange} required />
         </div>
-        <div className="form-group">
-          <label htmlFor="skills">Skills:</label>
-          <input type="text" id="skills" name="skills" onChange={handleChange} required />
-        </div>
+       
         <div className="form-group">
           <label htmlFor="area">Area:</label>
           <input type="text" id="area" name="area" onChange={handleChange} required />

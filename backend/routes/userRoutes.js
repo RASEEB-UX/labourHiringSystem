@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const validator = require('../assets/registerValidator')
-const { registerController, updateController, usersController,checkoutController } = require('../controllers/usercontroller')
-router.post('/register', validator, registerController)
-router.post('/update',validator,updateController)
-router.get('/employees', usersController)
-router.post('/checkoutSessionStripe',checkoutController)
+const validateUserData = require('../assets/userRegisterValidator')
+const { registerController, updateController, userController, loginController,sendOtpController,verifyOtpController } = require('../controllers/userController')
+router.post('/register', validateUserData, registerController)
+router.post('/update', updateController)
+router.post('/login', loginController)
+router.post('/sendotp', sendOtpController)
+router.post('/verifyotp', verifyOtpController)
+router.post('/getuserdata', userController)
 module.exports = router

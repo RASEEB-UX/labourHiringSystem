@@ -6,8 +6,8 @@ const Availablenav = () => {
 
     return (
         <>
-            <nav className="navbar">
-                <div className="navbar-container">
+            <nav className="navbar bg-[#5755FE]">
+                <div className="navbar-container bg-[#5755FE]">
                    
                     
                         <input type="text" id="searchbar" placeholder="Search by area." />
@@ -29,7 +29,7 @@ const Availablenav = () => {
                     <i className="fa-solid fa-bars text-dark togglebtn" onClick={()=>setIsOpen(!isOpen)}></i>
                   
                 </div>
-                <div className={`navbar-links ${isOpen ? 'activator' : ''}`}>
+                <div className={`navbar-links  ${isOpen ? 'activator' : ''}`}>
                         <ul>
                             <li><Link to="/">Home</Link></li>
                             <li><Link to="/aboutus">About us</Link></li>

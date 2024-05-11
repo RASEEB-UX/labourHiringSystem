@@ -12,9 +12,9 @@ function Card() {
     };
     const navigate = useNavigate();
     const { ct } = useParams()
-    const data = useSelector((state) => state.workers.users);
+    const data = useSelector((state) => state.workerStore.workers);
     const [empty, setEmpty] = useState(false);
-    const isEmpty = useSelector((state) => state.workers.empty);
+    const isEmpty = useSelector((state) => state.workerStore.empty);
     const [users, setUsers] = useState([]);
     const [selectval, setselect] = useState("")
     const [notfound, setNotFound] = useState(false)
@@ -73,7 +73,7 @@ function Card() {
 //console.log(notfound)
     return (
         <div className='outerframe'>
-            <nav className="navbar bg-blue-600 shdaow-lg border-b border-black ">
+            <nav className="navbar bg-[#5755FE] shdaow-lg border-b border-black ">
                 <div className="navbar-container py-1 borde bg-white-400 w-full flex justify-around items-center">
 
 
@@ -97,7 +97,7 @@ function Card() {
                     <i className="fa-solid text-4xl p-1 min-[512px]:hidden fa-bars text-dark togglebtn" onClick={() => setIsOpen(!isOpen)}></i>
 
                 </div>
-                <div className={`navbar-links bg-blue-600 w-full py-9 flex flex-col justify-center items-center z-10 ${isOpen ? 'block' : 'hidden'}`}>
+                <div className={`navbar-links bg-[#5755FE] w-full  flex flex-col justify-center items-center overflow-hidden transition-all duration-700 absolute top-[10vh] ${isOpen ? 'h-[80vh]' : 'h-[0vh]'}`}>
                     <ul className='flex  flex-col py-6 w-full justify-center items-center  tracking-wide text-2xl'>
                         <li className='my-5 text-3xl'><Link to="/">Home</Link></li>
                         <li className='my-5 text-3xl'><Link to="/aboutus">About us</Link></li>
@@ -105,7 +105,7 @@ function Card() {
 
                         <li className='my-5 text-3xl'><Link to="/available/all">Available</Link></li>
                     </ul>
-                    <div className="select-box w-full mx-auto">
+                    <div className="select-box w-full mx-auto my-2">
                         <select onChange={handleSelectchange} value={selectval} className='w-full p-3 rounded-full'>
                             <option value="" >Filter By Category</option>
                             <option value="all">all </option>
@@ -129,20 +129,19 @@ function Card() {
                         {users.length !== 0 && (
                             <>
 
-                                <div className='maincontent border border-black px-2 flex justify-evenly gap-4 flex-wrap py-2 font-serif'>
+                                <div className='maincontent border border-black px-2 flex justify-evenly gap-4 flex-wrap py-2 font-serif bg-[#FEFAF6]'>
                                     {users.map((item, key) => (
-                                        <div key={key} className="imagecontainer shadow-sm rounded-sm shadow-black p-9 bg-white w-full sm:max-w-[18rem]">
+                                        <div key={key} className="imagecontainer shadow-md rounded-sm shadow-black p-9 bg-white w-full sm:max-w-[18rem]">
                                             <div className="profile-img  bg-pink-400 h-[5rem] w-[5rem] mx-auto my-4 rounded-full">
-                                                <img src={item.photo} alt="Profile Picture"className='rounded-full size-full'/>
+                                                <img src={item.photo} alt="Profile Picture"className='rounded-full size-full hover:scale(2) transition-all duration-[1.2s]'/>
                                             </div>
                                             <div className="profile-info text-center py-9">
                                                 <h2 className='my-2 font-bold'>User Profile</h2>
                                                 <p><strong>Name:</strong>{" "+ item.username}</p>
                                                 <p><strong>Age:</strong>{" "+item.age}</p>
                                                 <p><strong>Mobile Number:</strong>{" "+ item.mobile}</p>
-                                                <p><strong>Aadhaar:</strong>{" "+ item.adhaar}</p>
                                                 <p><strong>Area:</strong>{" "+ item.area}</p>
-                                                <p><strong>Skills:</strong>{" "+ item.skills}</p>
+                                            
                                                 <p><strong>Category:</strong>{ " "+ item.category}</p>
                                             </div>
                                         </div>

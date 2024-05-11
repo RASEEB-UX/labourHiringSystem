@@ -1,57 +1,33 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios';
-export const fetchdata = createAsyncThunk("datafetch", async () => {
-    const response = await axios.get('http://127.0.0.1:8000/api/users/employees');
-
-    return response.data.user
-})
-
+import { createSlice } from '@reduxjs/toolkit'
 const userSlice = createSlice({
-    name: "workers",
+    name: "user",
     initialState: {
-        users: [],
+        user: [],
         rejected: false,
         pending: false,
-        empty: false
+        empty: false,
+        authStatus: false,
+        userType: '',
+        userEmail: ''
     },
     reducers: {
         addUser: (state, action) => {
-            state.users.unshift(action.payload);
+            console.log(action.payload)
+            state.user = action.payload
         },
-        updateUser: (state, action) => {
-            console.log("alladin")
-            console.log('dispatched action is ', action.payload)
-            const useradhaar = action.payload.adhaar;
-            state.users = state.users.filter((item) => item.adhaar !== useradhaar)
-            state.users.unshift(action.payload)
-        }
+        addAuthStatus: (state, action) => {
+            state.authStatus = action.payload
+        },
+        addUserType: (state, action) => {
+            state.userType = action.payload
+        },
+        addUserEmail: (state, action) => {
+            state.userEmail = action.payload//because you need email in otp form so save email as user logs in
+        },
+
     },
-    extraReducers: (builder) => {
-        builder.addCase(fetchdata.fulfilled, (state, action) => {
-            // console.log(action.payload)
-            if (action.payload.length !== 0) {
-                state.empty = false
 
-            }
-            else {
-                state.empty = true
-
-            }
-            state.pending = false
-            state.users = action.payload
-
-
-        }),
-            builder.addCase(fetchdata.pending, (state, action) => {
-
-                state.pending = true
-            }),
-            builder.addCase(fetchdata.rejected, (state, action) => {
-
-                state.rejected = true
-            })
-    }
 })
-export const { addUser, updateUser } = userSlice.actions
+export const { addUser, addAuthStatus, addUserType, addUserEmail } = userSlice.actions
 export default userSlice.reducer
 
