@@ -12,7 +12,7 @@ function PendingRequests() {
     const navigate=useNavigate()
     const getPendingRequests = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/pendingrequests/getallpendingrequests')
+            const response = await axios.get('https://labourhiringsystem-1.onrender.com/api/pendingrequests/getallpendingrequests')
             if (response.data.pendingRequests.length == 0)
                 return setNoData(!noData)
             setData(response.data.pendingRequests)
@@ -35,7 +35,7 @@ function PendingRequests() {
         try {
             setMsg('')
             setApiErr('')
-            const response = await axios.post('http://localhost:8000/api/pendingrequests/approveworker', { userPhoneNumber: workerPhoneNumber })
+            const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/pendingrequests/approveworker', { userPhoneNumber: workerPhoneNumber })
             dispatch(addWorker(response.data.user))//add the approved worker to available page
             console.log(response.data)
             setMsg('worker approved successfully')

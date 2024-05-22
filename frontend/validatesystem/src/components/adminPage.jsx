@@ -17,7 +17,7 @@ const AdminPage = () => {
   const dispatch = useDispatch()
   const addAdminData = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/admin/getadmindata', { email: userEmail })
+      const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/admin/getadmindata', { email: userEmail })
       console.log(response.data)
       dispatch(addUser(response.data.user))
     }
