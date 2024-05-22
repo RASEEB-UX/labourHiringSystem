@@ -8,12 +8,15 @@ const userSlice = createSlice({
         empty: false,
         authStatus: false,
         userType: '',
-        userEmail: ''
+        userEmail: '',
+        userMobile:''
     },
     reducers: {
         addUser: (state, action) => {
             console.log(action.payload)
             state.user = action.payload
+            state.userMobile=action.payload.mobile;
+            
         },
         addAuthStatus: (state, action) => {
             state.authStatus = action.payload
@@ -24,10 +27,13 @@ const userSlice = createSlice({
         addUserEmail: (state, action) => {
             state.userEmail = action.payload//because you need email in otp form so save email as user logs in
         },
+        addUserMobile:(state,action) => {
+            state.userMobile= action.payload//because you need email in otp form so save email as user logs in
+        },
 
     },
 
 })
-export const { addUser, addAuthStatus, addUserType, addUserEmail } = userSlice.actions
+export const { addUser, addAuthStatus, addUserType,addUserMobile, addUserEmail } = userSlice.actions
 export default userSlice.reducer
 

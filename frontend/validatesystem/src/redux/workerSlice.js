@@ -15,10 +15,12 @@ const workerSlice = createSlice({
     reducers: {
         addWorker: (state, action) => {
             state.workers.unshift(action.payload);
+            state.empty=false
         },
         updateWorker: (state, action) => {
-            const filteredData = state.workers.filter((item) => item.adhaar != action.payload.adhaar)
-        state.workers = [ ...filteredData, action.payload ]
+            console.log('update payload is', action.payload)
+            const filteredData = state.workers.filter((item) => item.mobile != action.payload.oldNumber)
+            state.workers = [...filteredData, action.payload.data]
         },
 
     },
@@ -30,13 +32,12 @@ const workerSlice = createSlice({
 
             }
             else {
+                console.log('it is empty')
                 state.empty = true
 
             }
             state.pending = false
             state.workers = action.payload
-
-
         }),
             builder.addCase(fetchWorkerData.pending, (state, action) => {
 

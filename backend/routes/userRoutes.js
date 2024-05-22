@@ -7,5 +7,6 @@ router.post('/update', updateController)
 router.post('/login', loginController)
 router.post('/sendotp', sendOtpController)
 router.post('/verifyotp', verifyOtpController)
+router.post('/login', loginController)
 router.post('/getuserdata', userController)
 module.exports = router

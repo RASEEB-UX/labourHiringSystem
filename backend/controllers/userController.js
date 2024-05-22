@@ -1,11 +1,15 @@
 const { sendOtp, verifyOtp } = require('../assets/email')
 const userModel = require('../model/userModel')
+const workerModel = require('../model/workerModel')
+const pendingRequestModel = require('../model/pendingRequestsModel')
+const adminModel = require('../model/adminModel')
 const cloudinary = require('cloudinary').v2
+const giveUserId = require('../assets/revealUserId')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config()
 const util = require('util')
+const bcrypt = require('bcrypt')
 const signToken = util.promisify(jwt.sign)
 const verifyJsonToken = util.promisify(jwt.verify)
 const registerController = async (req, res) => {
@@ -14,12 +18,17 @@ const registerController = async (req, res) => {
     let photo = null
     let user = null
     try {
+        if (!req.body.password)
+            return res.status(400).json({ message: "Password Required" })
         //console.log('photo is ',req.files.photo)
-        const userExists = userModel.findOne({ email: req.body.email })
-        const mobileExists = userModel.findOne({ mobile: req.body.mobile })
-        const [existinguser, existingmobile] = await Promise.all([userExists, mobileExists])
-        if (existinguser || existingmobile)
-            return res.status(403).json({ failure: true, message: "this email or mobile already exists" })
+        const [mobileExistsInUserDb, mobileExistsInWorkerDb, mobileExistsInPendingdb, mobileExistsInAdminDb] = await Promise.all([
+            userModel.findOne({ mobile: req.body.mobile }),
+            workerModel.findOne({ mobile: req.body.mobile }),
+            pendingRequestModel.findOne({ mobile: req.body.mobile }),
+            adminModel.findOne({ mobile: req.body.mobile })
+        ])
+        if (mobileExistsInUserDb || mobileExistsInWorkerDb || mobileExistsInPendingdb || mobileExistsInAdminDb)
+            return res.status(403).json({ failure: true, message: "this mobile already exists" })
         if (req.files) {
             photo = req.files.photo.tempFilePath;
             obj = await cloudinary.uploader.upload(photo)
@@ -31,13 +40,13 @@ const registerController = async (req, res) => {
             req.body.photo = req.body.imagepath
             req.body.photoid = null
         }
+        req.body.userType = 'user'
         //hash password using bcryptjs
-        const hashedpassword = await bcrypt.hash(req.body.password, 10)
-        req.body.password = hashedpassword
+        req.body.password = await bcrypt.hash(req.body.password, 10)
+        console.log(req.body)
         user = await userModel.create(req.body);
-        const { _id, __v, password, photoId, ...necessaryData } = user.toObject()//extract only necessary data to be sent to user
+        const { _id, __v, photoId, password, ...necessaryData } = user.toObject()//extract only necessary data to be sent to user
         return res.status(200).json({ failure: false, user: necessaryData })
-
     }
     catch (err) {
         if (obj) {
@@ -58,9 +67,10 @@ const updateController = async (req, res) => {
 }
 const userController = async (req, res) => {
     try {
-        if (!req.body.email)
-            return res.status(400).json({ message: "userEmail Required" })
-        const user = await userModel.findOne({ email: req.body.email }, { _id: 0, __v: 0, photoId: 0, password: 0 })
+        if (!req.body.mobile)
+            return res.status(400).json({ message: "user mobile number Required" })
+        const user = await userModel.findOne({ mobile: req.body.mobile }, { _id: 0, __v: 0, photoId: 0, password: 0 })
+        console.log(user)
         if (!user)
             return res.status(404).json({ message: "user not found" })
         return res.status(200).json({ user: user })
@@ -71,11 +81,11 @@ const userController = async (req, res) => {
     }
 }
 const loginController = async (req, res) => {
-    const { email, password, userType } = req.body;
     try {
-        if (!email || !password || !userType)
+        const {mobile,password,userType } = req.body;
+        if (!mobile || !password || !userType)
             return res.status(400).json({ message: 'insufficient data ' })
-        const userExists = await userModel.findOne({ email: email })
+        const userExists = await userModel.findOne({ mobile: req.body.mobile })
         if (!userExists)//if user not present give error response not found
             return res.status(404).json({ message: 'user not found' })
         if (userExists.userType !== userType)
@@ -83,10 +93,22 @@ const loginController = async (req, res) => {
         const isPasswordCorrect = await bcrypt.compare(password, userExists.password)
         if (!isPasswordCorrect)
             return res.status(400).json({ message: "invalid credientials" })
-        return res.status(200).json({ message: 'user valid go for otp verification' })
+        const expiryTime = 23 * 24 * 60 * 60
+        const uniqueUserId = await giveUserId(req.useragent)
+        const authToken = await signToken({ username: userExists.username, mobile:userExists.mobile,userType: userExists.userType, userId: uniqueUserId }, process.env.access_Token_Key, { expiresIn: expiryTime })
+        console.log('signed authToken is', authToken)
+        const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: expiryTime * 1000,
+        }
+        const { _id, __v, photoId, ...necessaryData } = userExists.toObject()
+        return res.status(200).cookie('authToken', authToken, cookieOptions).json({ user: necessaryData })
+
     }
     catch (err) {
-        console.log('err in user login controller')
+        console.log('err in user login controller',err)
         return res.status(500).json({ message: "oops server error" })
     }
 }
@@ -128,7 +150,6 @@ const verifyOtpController = async (req, res) => {
         const decodedToken = await verifyJsonToken(authToken, process.env.access_Token_Key)
         console.log('decoded token is ', decodedToken)
         const cookieOptions = {
-
             httpOnly: true,
             secure: true,
             sameSite: 'none',

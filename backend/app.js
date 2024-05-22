@@ -15,7 +15,11 @@ const workerRouter = require('./routes/workerRoutes')
 const userRouter = require('./routes/userRoutes')
 const adminRouter=require('./routes/adminRoutes')
 const checkAuthStatus=require('./controllers/checkAuthStatus')
+const pendingRequestRouter=require('./routes/pendingRequestRoutes')
+const advertisementRouter=require('./routes/advertisementRoutes')
+const feedbackRouter=require('./routes/feedbackRoute')
 var app = express();
+app.use(helmet())
 app.use(useragent.express());
 //app.use(helmet())
 //import {v2 as cloudinary} from 'cloudinary';
@@ -55,6 +59,9 @@ app.use('/api/workers', workerRouter)
 app.use('/api/user', userRouter)
 app.use('/api/admin',adminRouter)
 app.get('/api/checkauthstatus',checkAuthStatus)
+app.use('/api/pendingrequests',pendingRequestRouter)
+app.use('/api/advertisement',advertisementRouter)
+app.use('/api/feedback',feedbackRouter)
 
 app.use(function (req, res, next) {
   next(createError(404));

@@ -5,8 +5,7 @@ const util = require('util')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { sendOtp, verifyOtp } = require('../assets/email')
-const { v4: uuidv4 } = require('uuid');
-
+const giveUserId =require('../assets/revealUserId')
 const signToken = util.promisify(jwt.sign)
 const verifyJsonToken = util.promisify(jwt.verify)
 const loginController = async (req, res) => {
@@ -15,6 +14,7 @@ const loginController = async (req, res) => {
         if (!email || !password || !userType)
             return res.status(400).json({ message: 'insufficient data ' })
         const userExists = await adminModel.findOne({ email: email })
+        console.log(userExists)
         if (!userExists)//if user not present give error response not found
             return res.status(404).json({ message: 'user not found' })
         if (userExists.userType !== userType)
@@ -49,7 +49,7 @@ const registerController = async (req, res) => {
     let userdocument = null
     try {
         //console.log('photo is ',req.files.photo)
-        const userExists = adminModel.findOne({ email: req.body.adhaar })
+        const userExists = adminModel.findOne({ email: req.body.email })
         const mobileExists = adminModel.findOne({ mobile: req.body.mobile })
         const [existinguser, existingmobile] = await Promise.all([userExists, mobileExists])
         if (existinguser || existingmobile)
@@ -65,11 +65,13 @@ const registerController = async (req, res) => {
             req.body.photo = req.body.imagepath
             req.body.photoid = null
         }
+        req.body.user='admin'
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         req.body.password = hashedPassword
         //  console.log('photo is ', photo)
         userdocument = await adminModel.create(req.body);
         const { _id, __v, photoId, password, ...refinedData } = userdocument.toObject()
+
         res.status(200).json({ failure: false, user: refinedData })
 
     }
@@ -115,23 +117,16 @@ const verifyOtpController = async (req, res) => {
         const response = await verifyOtp(req.body.otp)
         //get device id by deviceUUid package
         const expiryTime = 23 * 24 * 60 * 60
-        const { source, browser, version, os, platform, geoIp, isMobile, isWindows, isLinux, isLinux64 } = req.useragent
-        const deviceFirstId = uuidv4();
-        const userData = JSON.stringify({ source, browser, version, os, platform, geoIp, isMobile, isWindows, isLinux, isLinux64, deviceFirstId })
-        console.log('user data is', userData)
-        const uniqueUserId = await bcrypt.hash(userData, 10) //hash this user specific info
-        const authToken = await signToken({ username: userExists.username, email: userExists.email, userType: userExists.userType, userId: uniqueUserId }, process.env.access_Token_Key, { expiresIn: expiryTime })
+        const uniqueUserId = await giveUserId(req.useragent)
+        const authToken = await signToken({ username: userExists.username,mobile:userExists.mobile, email: userExists.email, userType: userExists.userType, userId: uniqueUserId }, process.env.access_Token_Key, { expiresIn: expiryTime })
         console.log('signed authToken is', authToken)
-        const decodedToken = await verifyJsonToken(authToken, process.env.access_Token_Key)
-        console.log('decoded token is ', decodedToken)
         const cookieOptions = {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
             maxAge: expiryTime * 1000,
         }
-
-        return res.status(200).cookie('authToken', authToken, cookieOptions).json({ message: "user authenticated ,token issued" })
+        return res.status(200).cookie('authToken', authToken, cookieOptions).json({username: userExists.username,mobile:userExists.mobile, email: userExists.email,userType: userExists.userType, message: "user authenticated ,token issued" })
     }
     catch (err) {
         console.log(err.status)

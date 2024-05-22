@@ -1,7 +1,8 @@
 import React, { Suspense, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addAuthStatus, addUserEmail, addUserType} from './redux/userSlice';
+import { addAuthStatus, addUserEmail, addUserMobile, addUserType } from './redux/userSlice';
+import { addAdvertisement } from './redux/advertisementSlice.js'
 import axios from 'axios';
 import Navbar from './components/navbar';
 import { fetchWorkerData } from './redux/workerSlice';
@@ -19,17 +20,34 @@ const WorkerProfilePage = React.lazy(() => import('./components/workerProfilePag
 const UserRegister = React.lazy(() => import('./components/userRegister'));
 const ProtectedComponent = React.lazy(() => import('./components/protectedComponent'));
 const AdminMainPage = React.lazy(() => import('./components/adminMainPage'))
-const AllFeedBackMessages=React.lazy(()=>import('./components/allFeedBackMessages'))
-const SignInButton  = React.lazy(() => import('./components/phone.jsx'))
-
+const AllFeedBackMessages = React.lazy(() => import('./components/allFeedBackMessages'))
+const SignInButton = React.lazy(() => import('./components/phone.jsx'))
+const WorkerProtectedComponent = React.lazy(() => import('./components/workerProtectedComponent.jsx'))
+const RegisterProtectedComponent = React.lazy(() => import('./components/registerProtected.jsx'))
+const UserProtectedComponent = React.lazy(() => import('./components/userProtectedComponent.jsx'))
+const PendingRequestsComponent = React.lazy(() => import('./components/pendingRequests.jsx'))
+const ViewDocumentsComponent = React.lazy(() => import('./components/viewDocuments.jsx'))
+const Advertisement = React.lazy(() => import('./components/advertisement.jsx'))
+const UserWorkerLogin = React.lazy(() => import('./components/userWorkerLogin.jsx'))
 function App() {
   const dispatch = useDispatch();
+  const fetchAdvertisement = async () => {
+    try {
+      const advertisementResponse = await axios.get('http://localhost:8000/api/advertisement/getAdvertisement')
+      console.log(advertisementResponse)
+      dispatch(addAdvertisement(advertisementResponse.data.advertisement))
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
   const checkAuthStatus = async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/checkauthstatus', { withCredentials: true })
       dispatch(addUserType(response.data.userType))
       dispatch(addAuthStatus(true))
       dispatch(addUserEmail(response.data.email))
+      dispatch(addUserMobile(response.data.mobile))
     }
     catch (err) {
       console.log('error from app.js checkauthstatus function', err)
@@ -39,6 +57,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchWorkerData());
     checkAuthStatus()
+    fetchAdvertisement()
   }, [dispatch]);
 
   return (
@@ -48,23 +67,36 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/otpform/:phoneNumber" element={<Otp />} />
-          <Route exact path="/register" element={<Register />} />
+
           <Route exact path='/update' element={<Update />} />
           <Route exact path='/loginform' element={<LoginForm />} />
-          <Route exact path='/userRegister' element={<UserRegister />} />
+          {/* protected component for registration pages of user and worker*/}
+          <Route element={<RegisterProtectedComponent />}>
+            <Route exact path="/register" element={<Register />} />
+            <Route exact path='/userRegister' element={<UserRegister />} />
+          </Route>
           <Route exact path='/updateform' element={<Updateform />} />
           <Route exact path="/available/:ct" element={<CardComponent />} />
           <Route exact path='/signin' element={<SignInButton />} />
-         
+          <Route exact path='/loginwithpassword' element={<UserWorkerLogin />} />
           <Route exact path='/emailotpform' element={<EmailOtpVerification />} />
+          {/* protected component for admin page,userpage */}
           <Route element={<ProtectedComponent />}>
-            <Route exact path='/workerpage' element={<WorkerProfilePage />} />
-            <Route exact path='/userpage' element={<UserProfilePage />} />
+
             <Route exact path='/adminpage' element={<AdminPage />} >
               <Route exact path='/adminpage' element={<AdminMainPage />} />
+              
               <Route exact path='/adminpage/getallfeedbacks' element={<AllFeedBackMessages />} />
+              <Route exact path='/adminpage/advertisement' element={<Advertisement />} />
+              <Route exact path='/adminpage/getpendingrequests' element={<PendingRequestsComponent />} />
+              <Route exact path='/adminpage/viewdocuments' element={<ViewDocumentsComponent />} />
             </Route>
           </Route>
+          <Route element={<UserProtectedComponent />}>
+            <Route exact path='/userpage' element={<UserProfilePage />} />
+            <Route exact path='/workerpage' element={<WorkerProfilePage />} />
+          </Route>
+          {/* protected component for worker profile page*/}
         </Routes>
       </Suspense>
 

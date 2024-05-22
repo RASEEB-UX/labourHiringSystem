@@ -6,39 +6,36 @@ const Update = () => {
   const [aadhaar, setAadhaar] = useState('');
   const data = useSelector((state) => state.workerStore.workers)
   const [err, seterror] = useState('')
-
-  useEffect(() => {
+  const handleNavigation = (user_phone_number) => {
+    if(data.length!==0)
+      {
+        const numberExists = data.find((item) => item.mobile == user_phone_number)
+        if (numberExists) {
+          navigate('/updateform', { state: { userPhoneNumber: user_phone_number } })
+        }
+        else {
+          alert('No record found with this phoneNumber')
+          // Send user_json_url to your backend to retrieve user info (i.e. country code and phone number) from this URL.
+        }
+      }
+      else{
+        navigate('/updateform', { state: { userPhoneNumber: user_phone_number } })
+      }
+   
+  }
     console.log('inside useEffect')
     const phoneEmailListener = (userObj) => {
       console.log('script called me')
       const { user_json_url, user_country_code, user_phone_number } = userObj;
       console.log('received correct otp ')
-      const numberExists = data.find((item) => item.mobile == user_phone_number)
-      if (numberExists) {
-      navigate('/updateform',{state:{userPhoneNumber:user_phone_number}})
-      }
-      else {
-        alert('No record found with this phoneNumber')
-
-        // You can submit your form here or redirect user to post login dashboard page
-        // Send user_json_url to your backend to retrieve user info (i.e. country code and phone number) from this URL.
-      }
+     handleNavigation(user_phone_number)
     }
-      // Load external script
-      window.phoneEmailListener = phoneEmailListener;
-      const script = document.createElement('script');
-      script.src = 'https://www.phone.email/sign_in_button_v1.js';
-      script.async = true;
-      document.body.appendChild(script);
-      // Cleanup function
-      return () => {
-        document.body.removeChild(script);
-        delete window.phoneEmailListener;
-      };
-    
-  }, []);
-
-
+    // Load external script
+    window.phoneEmailListener = phoneEmailListener;
+    const script = document.createElement('script');
+    script.src = 'https://www.phone.email/sign_in_button_v1.js';
+    script.async = true;
+    document.body.appendChild(script);
 
   return (
     <div className="flex flex-col sm:flex-row justify-center  gap-4 items-center min-h-[90vh] w-full bg-[#FDFDFD] ">

@@ -1,15 +1,14 @@
 import axios from 'axios';
 import { React, useState, useEffect } from 'react'
 import { FaShieldAlt } from 'react-icons/fa';
-import { useLocation } from 'react-router-dom';
-import { addAuthStatus } from '../redux/userSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { addAuthStatus, addUserEmail, addUserMobile } from '../redux/userSlice';
 import { useDispatch } from 'react-redux';
-import { addUserType ,addUser} from '../redux/userSlice';
+import { addUserType, addUser } from '../redux/userSlice';
 function EmailOtpVerification() {
     const location = useLocation()
     const dispatch = useDispatch()
     const { email, userType } = location.state
-
     console.log(location)
     const [otp, setOtp] = useState('')
     const [otpErr, setOtpErr] = useState('')
@@ -24,10 +23,12 @@ function EmailOtpVerification() {
             console.log(response.data)
             setOtpSuccessMsg('User Autheticated')
             setOtp('')
-            dispatch(addUser(response.data.user))
+            // dispatch(addUser(response.data.user))
             //since user is now authenticated so add his user type and authstatus to redux store
             dispatch(addAuthStatus(true))
-            dispatch(addUserType(userType))
+            dispatch(addUserType(response.data.userType))
+            dispatch(addUserEmail(response.data.email))
+            dispatch(addUserMobile(response.data.mobile))
         }
         catch (err) {
             console.log('err is', err)

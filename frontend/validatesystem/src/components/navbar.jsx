@@ -34,10 +34,8 @@ const Navbar = () => {
   const handleChange = (e) => {//function to change user type
     console.log('sign in option is', e.target.value)
   
-    navigate(`/${e.target.value}page`, {
-      state: {
-        userChoice: e.target.value
-      }
+    navigate(`/${e.target.value}page`,{
+     state:{ userChoice:e.target.value}
     })
     setUsertype('')
 

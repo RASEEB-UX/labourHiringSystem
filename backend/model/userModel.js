@@ -9,10 +9,7 @@ const schema = mongoose.Schema({
         type: Number,
         Required: true
     },
-    email: {
-        type: String,
-        Required: true
-    },
+  
     photo: {
         type: String,
         Required: true
@@ -33,11 +30,12 @@ const schema = mongoose.Schema({
         type: String,
         Required: true
     },
-    password:{
+   
+    userType:{
         type: String,
         Required: true
     },
-    userType:{
+    password:{
         type: String,
         Required: true
     }

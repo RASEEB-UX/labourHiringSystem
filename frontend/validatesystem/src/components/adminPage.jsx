@@ -3,12 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { addUser } from '../redux/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaCog, FaHome, FaComment, FaAdn } from 'react-icons/fa'
+import { removeAdvertisement } from '../redux/advertisementSlice';
+import { FaCog, FaHome, FaComment, FaAdn, FaTimes } from 'react-icons/fa'
+import { MdMenu } from 'react-icons/md'; // Importing MdMenu from react-icons/md
 import axios from 'axios';
 
 const AdminPage = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [openSidebar, setIsSidebarOpen] = useState(false);
   const userEmail = useSelector((state) => state.userStore.userEmail)
+  const advertisementStore = useSelector((state) => state.advertisementStore)
+  const advertisementId=advertisementStore.advertisementObj._id
+  console.log(advertisementId)
   const dispatch = useDispatch()
   const addAdminData = async () => {
     try {
@@ -24,56 +29,75 @@ const AdminPage = () => {
     addAdminData()
   }, [])
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const toggleSidebar = (id) => {
+    setIsSidebarOpen(!openSidebar);
   };
-
+  const handleRemoveAdvertisement = async () => {
+    try {
+      console.log(advertisementId)
+      const response = await axios.delete('http://localhost:8000/api/advertisement/removeAdvertisement', { data:{id:advertisementId }})
+      console.log(response.data)
+      alert('Adevrtisement Removed Successfully')
+      dispatch(removeAdvertisement())
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
   return (
-    <div className="flex h-[90vh] bg-[#E9EEFA]">
+    <div className="flex h-[90vh] bg-[#E9EEFA]" >
       {/* Sidebar */}
       <div
-        className={`w-0  min-[700px]:w-[15rem] bg-[#2E53DA] text-gray-100 h-full  rounded-lg
-        `}
+        className={`w-0 min-[700px]:w-[15rem]  bg-[#2E53DA] text-gray-100 h-full transition-all rounded-lg
+  ${openSidebar ? ' absolute w-[15rem]' : ''}`}
       >
         <div className="p-4">
-          <h2 className="text-2xl font-bold mb-4">Admin Panel</h2>
+          <h2 className="text-2xl font-bold mb-4 max-[700px]:flex  max-[700px]:justify-around gap-6 whitespace-nowrap">Admin Panel
+            <span className='block min-[700px]:hidden' onClick={toggleSidebar}><FaTimes size={34} /></span>
+          </h2>
           {/* Sidebar Links */}
-          <ul>
-            <li className="py-2 flex  hover:text-black hover:bg-[#FFFFFE]  rounded-full items-center justify-center gap-2">
-              <span><FaHome size={23} /></span>
-              <Link to={{ pathname: '/adminpage' }} state={{ userChoice: 'admin' }} className=" hover:text-black  px-4 py-2  block">
-                Home
-              </Link>
-            </li>
-            <li className="py-2 flex hover:text-black hover:bg-[#FFFFFE] rounded-full items-center justify-center gap-2">
-              <span><FaComment size={23} /></span>
-              <Link to={{ pathname: '/adminpage/getallfeedbacks' }} state={{ userChoice: 'admin' }} className=" hover:text-black   px-4 py-2  block">
-                Feedback
-              </Link>
-            </li>
-            <li className="py-2 flex hover:text-black hover:bg-[#FFFFFE] rounded-full items-center justify-center gap-2">
-              <span><FaAdn size={23} /></span>
-              <Link to='#'  className=" hover:text-black   py-2  px-4 block">
-                Advertisement
-              </Link>
-            </li>
-            <li className="py-2 flex hover:text-black hover:bg-[#FFFFFE]  rounded-full   items-center justify-center gap-2 ">
-              <span><FaCog size={23} /></span>
-              <Link to="#" className=" hover:text-black    py-2 px-4 block">
-                Settings
-              </Link>
-            </li>
+          <table className=' w-full  flex justify-center '>
+            <tbody className='p-9 '>
+              <tr className=''>
+                <td><FaHome size={23} /></td>
+                <td><Link to={{ pathname: '/adminpage' }} state={{ userChoice: 'admin' }} className=" hover:text-black  px-4 py-2  block">Home</Link></td>
+              </tr>
+              <tr>
+                <td><FaComment size={23} /></td>
+                <td><Link to={{ pathname: '/adminpage/getallfeedbacks' }} state={{ userChoice: 'admin' }} className=" hover:text-black   px-4 py-2  block">Feedback</Link></td>
+              </tr>
+              {
+                advertisementStore.advertisementPresent ?
+                  <tr>
+                    <td><FaAdn size={23} /></td>
+                    <td><h2 onClick={() => handleRemoveAdvertisement()} className="cursor-pointer hover:text-black   py-2  px-4 block"> Remove Advertisement</h2></td>
+                  </tr> : <tr>
+                    <td><FaAdn size={23} /></td>
+                    <td><Link to={{ pathname: '/adminpage/advertisement' }} state={{ userChoice: 'admin' }} className=" hover:text-black   py-2  px-4 block"> Add Advertisement</Link></td>
+                  </tr>
+              }
 
-            {/* Add more sidebar links as needed */}
-          </ul>
+
+              <tr>
+                <td><FaComment size={23} /></td>
+                <td><Link to={{ pathname: '/adminpage/getpendingrequests' }} state={{ userChoice: 'admin' }} className=" hover:text-black    py-2 px-4 block">Pending Requests</Link></td>
+              </tr>
+              <tr>
+                <td><FaCog size={23} /></td>
+                <td><Link to={{ pathname: '/adminpage' }} state={{ userChoice: 'admin' }} className=" hover:text-black    py-2 px-4 block">Settings</Link></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
-        {/* User Section */}
-
       </div>
 
+
       {/* Main Content */}
-      <div className="flex-1 border-2 border-red-900">
+      <div className="flex-1 border-2 border-purple-800 overflow-y-auto px-2">
+        <h2 className='min-h-[12vh] rounded-sm bg-[#5755FE]  px-2 shadow-md my-2  text-center flex justify-around min-[700px]:justify-center items-center text-2xl font-extrabold mx-auto'>
+          <span className='block min-[700px]:hidden' onClick={toggleSidebar}><MdMenu size={54} /></span>
+          Welcome Back
+        </h2>
         <Outlet />
       </div>
     </div>

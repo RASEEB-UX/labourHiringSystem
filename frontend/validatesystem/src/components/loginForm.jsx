@@ -26,6 +26,7 @@ const LoginForm = () => {
         setData({ ...data, [name]: value })
     }
     const handleSubmit = async (event) => {
+        data.userType='admin'
         setSubmitMsg('')
         const errors = {}
         event.preventDefault();
@@ -108,21 +109,13 @@ const LoginForm = () => {
                         <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" name='password' type="password" value={data.password} required onChange={handleChange} />
                         {err.password && <div className='text-red-700 text-center '>8 digit password required</div>}
                     </div>
-                    <div className="mb-6">
-                        <select name="userType" id="" value={data.userType} onChange={handleChange} className="border appearance-none border-gray-400 rounded px-3 py-2 w-full">
-                            <option value=''>User Type</option>
-                            <option value="admin">Admin</option>
-                            <option value="user">User</option>
-                            <option value="worker">worker</option>
-                        </select>
-                        {err.userType && <div className="text-red-500">{err.userType}</div>}
-                    </div>
+            
                     <div className="flex items-center justify-between">
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                             {isSubmitting ? 'Submitting...' : "Sign In"}
                         </button>
                     </div>
-                    <div className='w-full text-center my-2 text-black curser-pointer'><Link to={`${data.userType == 'user' ? '/userRegister' : '/register'}`}>Create an account ...</Link></div>
+                   
                 </form>
             </div>
 

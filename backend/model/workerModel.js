@@ -35,8 +35,35 @@ const schema = mongoose.Schema({
     category:{
         type:String,
         Required:true
+    },
+    labourDocument:{
+        type:String,
+        Required:true
+
+    },
+    documentId:{
+        type:String,
+        Required:true
+
+    },
+    aadhaar:{
+        type:String,
+        Required:true
+    },
+    aadhaarId:{
+        type:String,
+        Required:true
+    },
+    userType:{
+        type: String,
+        Required: true
+    },
+    password:{
+        type:String,
+        Required:true
     }
+
     
    
 })
-module.exports=mongoose.model('useraccount',schema)
+module.exports=mongoose.model('workeraccount',schema)
