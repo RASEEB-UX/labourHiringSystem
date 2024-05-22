@@ -13,7 +13,6 @@ const Register = React.lazy(() => import('./components/register'));
 const CardComponent = React.lazy(() => import('./components/card'));
 const Update = React.lazy(() => import('./components/update'));
 const Updateform = React.lazy(() => import('./components/updateform'));
-const Otp = React.lazy(() => import('./components/otp'));
 const UserProfilePage = React.lazy(() => import('./components/userProfilePage'));
 const AdminPage = React.lazy(() => import('./components/adminPage'));
 const WorkerProfilePage = React.lazy(() => import('./components/workerProfilePage'));
@@ -66,7 +65,7 @@ function App() {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/otpform/:phoneNumber" element={<Otp />} />
+        
 
           <Route exact path='/update' element={<Update />} />
           <Route exact path='/loginform' element={<LoginForm />} />

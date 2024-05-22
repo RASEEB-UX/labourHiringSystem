@@ -5,7 +5,6 @@ import { addWorker } from '../redux/workerSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { reauthenticateWithCredential } from 'firebase/auth';
 function Register() {
   const navigate = useNavigate()
   const location = useLocation()

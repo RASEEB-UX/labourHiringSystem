@@ -47,7 +47,7 @@ function EmailOtpVerification() {
             setOtpErr('')
             setButtonClicked(true)
             setOtpMsg('Requesting Otp')
-            const response = await axios.post(`http://localhost:8000/api/${userType}/sendotp`, { email })
+            const response = await axios.post(`https://labourhiringsystem-1.onrender.com/api/${userType}/sendotp`, { email })
             console.log(`http://localhost:8000/${userType}/sendotp`)
             console.log(response.data)
             setButtonClicked(false)

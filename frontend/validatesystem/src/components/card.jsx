@@ -147,7 +147,7 @@ console.log('inside findBy')
                                                 <p><strong>Age:</strong>{" " + item.age}</p> 
                                                 <p><strong>Area:</strong>{" " + item.area}</p>
                                                 <p><strong>Category:</strong>{" " + item.category}</p>
-                                                <p><strong >Call:</strong> <Link to={`${authStatus ?`tel:+91+${item.mobile}`:`/loginwithpassword`}`}><FaPhone size={34} className='bg-blue-600 w-full my-1 rounded-md shadow-md p-1'/></Link></p>
+                                                <p><strong >Call:</strong> <Link to={`${authStatus ?`tel:+91${item.mobile}`:`/loginwithpassword`}`}><FaPhone size={34} className='bg-blue-600 w-full my-1 rounded-md shadow-md p-1'/></Link></p>
                                             </div>
                                         </div>
                                     ))}
