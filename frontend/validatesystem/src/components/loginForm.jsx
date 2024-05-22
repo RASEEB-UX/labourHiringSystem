@@ -52,7 +52,7 @@ const LoginForm = () => {
         try {
             setSubmitMsg('Submitting Form Data')
             setSubmitting(true)//set submit button status to true
-            const response = await axios.post(`http://localhost:8000/api/${data.userType}/login`, data)
+            const response = await axios.post(`https://labourhiringsystem-1.onrender.com/api/${data.userType}/login`, data)
             setSubmitMsg('')
             setSubmitting(false)
             setApiSuccess('user valid go for otp')

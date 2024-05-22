@@ -19,7 +19,7 @@ function EmailOtpVerification() {
     const verifyOtp = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(`http://localhost:8000/api/${userType}/verifyotp`, { email, otp }, { withCredentials: true })
+            const response = await axios.post(`https://labourhiringsystem-1.onrender.com/api/${userType}/verifyotp`, { email, otp }, { withCredentials: true })
             console.log(response.data)
             setOtpSuccessMsg('User Autheticated')
             setOtp('')

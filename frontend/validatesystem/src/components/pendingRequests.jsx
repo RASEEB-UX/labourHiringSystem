@@ -54,7 +54,7 @@ function PendingRequests() {
     const handleRejection = async (workerPhoneNumber) => {
         try {
             setApiErr('')
-            const response = await axios.post('http://localhost:8000/api/pendingrequests/rejectworker', { userPhoneNumber: workerPhoneNumber })
+            const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/pendingrequests/rejectworker', { userPhoneNumber: workerPhoneNumber })
             console.log(response.data)
             setMsg('worker deleted successfully')
 

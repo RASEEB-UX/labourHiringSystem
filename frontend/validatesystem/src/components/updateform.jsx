@@ -77,7 +77,7 @@ function Updateform() {
             console.log('errors present', invalidData)
             setmsg("Submitting Data ....")
             setSubmitting(true)
-            const response = await axios.put('http://localhost:8000/api/workers/update', formData);
+            const response = await axios.put('https://labourhiringsystem-1.onrender.com/api/workers/update', formData,{withCredentials:true});
             setApiSuccess('Updated Successfully')
             setSubmitting(false)
             setmsg('')

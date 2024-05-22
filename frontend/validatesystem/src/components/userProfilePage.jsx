@@ -11,7 +11,7 @@ function UserProfile() {
   const dispatch = useDispatch()
   const getUserData = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/user/getuserdata', { mobile:userMobile})
+      const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/user/getuserdata', { mobile:userMobile})
       console.log(response.data)
       dispatch(addUser(response.data.user))
       setUserData(response.data.user)

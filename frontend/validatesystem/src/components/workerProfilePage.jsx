@@ -6,6 +6,7 @@ function WorkerProfilePage() {
   const navigate = useNavigate()
   const workerStore = useSelector((state) => state.workerStore)
   const userStore = useSelector((state) => state.userStore)
+  console.log(workerStore)
   const user = workerStore.workers.filter((worker) => worker.mobile == userStore.userMobile)[0]
   console.log('selected worker is',user)
   console.log('worker profile page')

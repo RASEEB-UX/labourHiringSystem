@@ -112,7 +112,7 @@ function Register() {
     try {
       setmsg("Submitting Form Data")
       setSubmitting(true)
-      const response = await axios.post('http://localhost:8000/api/pendingrequests/register', data, {
+      const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/pendingrequests/register', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

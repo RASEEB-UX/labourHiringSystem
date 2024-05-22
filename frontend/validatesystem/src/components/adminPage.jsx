@@ -35,7 +35,7 @@ const AdminPage = () => {
   const handleRemoveAdvertisement = async () => {
     try {
       console.log(advertisementId)
-      const response = await axios.delete('http://localhost:8000/api/advertisement/removeAdvertisement', { data:{id:advertisementId }})
+      const response = await axios.delete('https://labourhiringsystem-1.onrender.com/api/advertisement/removeAdvertisement', { data:{id:advertisementId }})
       console.log(response.data)
       alert('Adevrtisement Removed Successfully')
       dispatch(removeAdvertisement())

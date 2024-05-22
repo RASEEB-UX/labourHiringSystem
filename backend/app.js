@@ -32,7 +32,7 @@ app.use(fileupload({
 
 app.use(cors({
   credentials: true,
-  origin: ["http://localhost:5173"]//,"http://127.0.0.1:3000"],
+  origin: true//,"http://127.0.0.1:3000"],
 
 }))
 

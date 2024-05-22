@@ -45,7 +45,7 @@ function Home() {
             setSubmitting(true)
 
             setMsg('Submitting Feedback...')
-            const response = await axios.post('http://localhost:8000/api/feedback/addfeedback', formData)
+            const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/feedback/addfeedback', formData)
             console.log('feedback response is', response.data)
             setMsg('')
             setSubmitting(false)

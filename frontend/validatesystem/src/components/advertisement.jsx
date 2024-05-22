@@ -23,7 +23,7 @@ export default function Advertisement() {
             console.log(formData)
             setMsg("Adding Advertisement")
             setSubmitting(true)
-            const response = await axios.post('http://localhost:8000/api/advertisement/addAdvertisement', { advertisement: formData.advertisement })
+            const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/advertisement/addAdvertisement', { advertisement: formData.advertisement })
             setSubmitting(false)
             setMsg('')
             dispatch(addAdvertisement(response.data.advertisement))

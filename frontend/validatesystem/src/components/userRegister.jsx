@@ -111,7 +111,7 @@ function UserRegister() {
 
     try {
       setSubmitting(true)
-      const response = await axios.post('http://localhost:8000/api/user/register', data, {
+      const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/user/register', data, {
         withCredentials: true
       });
       console.log(response.data)

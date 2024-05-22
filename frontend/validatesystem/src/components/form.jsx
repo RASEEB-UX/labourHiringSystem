@@ -36,7 +36,7 @@ const Form = () => {
         formDataToSend.append(key, value);
       });
       setmsg('plz wait submitting data')
-      const response = await axios.post('http://localhost:8000/api/users/register', formDataToSend);
+      const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/users/register', formDataToSend);
       setmsg("Form Submission successfull")
       setTimeout(()=>{ navigate('/available')},2000)
       console.log(response.data); // Handle successful submission

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 export const fetchWorkerData = createAsyncThunk("fetchdata", async () => {
-    const response = await axios.get('http://127.0.0.1:8000/api/workers/getallworkers');
+    const response = await axios.get('https://labourhiringsystem-1.onrender.com/api/workers/getallworkers');
     return response.data.user
 })
 const workerSlice = createSlice({

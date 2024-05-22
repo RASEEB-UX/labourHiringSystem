@@ -43,7 +43,7 @@ function App() {
   }
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/checkauthstatus', { withCredentials: true })
+      const response = await axios.get('https://labourhiringsystem-1.onrender.com/api/checkauthstatus', { withCredentials: true })
       dispatch(addUserType(response.data.userType))
       dispatch(addAuthStatus(true))
       dispatch(addUserEmail(response.data.email))

@@ -120,8 +120,18 @@ const updateController = async (req, res) => {
       mobile: req.body.newNumber
     }, { new: true})
     console.log(newUpdatedUser)
+    const expiryTime = 23 * 24 * 60 * 60
+    const uniqueUserId = await giveUserId(req.useragent)
+    const authToken = await signToken({ username: newUpdatedUser.username,mobile:newUpdatedUser.mobile, userType:newUpdatedUser.userType, userId: uniqueUserId }, process.env.access_Token_Key, { expiresIn: expiryTime })
+    console.log('signed authToken is', authToken)
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: expiryTime * 1000,
+    }
     const {photoId,password,_id,documentId,labourDocument,aadhaar,__v,...necessaryData}=newUpdatedUser.toObject()
-    res.status(200).json({ success: true, user: necessaryData})
+    res.status(200).cookie('authToken',authToken).json({ success: true, user: necessaryData})
   }
   catch (err) {
     console.log(err)

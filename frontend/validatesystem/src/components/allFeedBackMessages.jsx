@@ -9,7 +9,7 @@ function AllFeedBackMessages() {
   const feedbackStore =useSelector((state) =>state.feedBackStore)
   const fetchAllFeedbacks = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/feedback/getallfeedbacks')
+      const response = await axios.get('https://labourhiringsystem-1.onrender.com/api/feedback/getallfeedbacks')
        dispatch(addFeedbacks(response.data.feedbacks))
     }
     catch (err) {
@@ -27,7 +27,7 @@ useEffect(() =>{
   const handleDeleteFeedback = async (id) => {
     try {
       console.log(id)
-      const response = await axios.delete('http://localhost:8000/api/feedback/deletefeedback', { data: { feedBackId: id } })
+      const response = await axios.delete('https://labourhiringsystem-1.onrender.com/api/feedback/deletefeedback', { data: { feedBackId: id } })
       dispatch(deleteFeedback(id))
       alert('feedback deleted successfully')
     }
