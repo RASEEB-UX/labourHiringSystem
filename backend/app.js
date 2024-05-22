@@ -32,9 +32,10 @@ app.use(fileupload({
 
 app.use(cors({
   credentials: true,
-  origin: true//,"http://127.0.0.1:3000"],
-
-}))
+  origin: (origin, callback) => {
+    callback(null, true); // Allow all origins
+  }
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
