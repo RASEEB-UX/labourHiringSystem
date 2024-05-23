@@ -53,7 +53,7 @@ const verifyOtp = (receivedOtp) => {
             reject(errObj)//if no otp send error response
         }
 
-        if (currentTime - otpSentTime > 15) {
+        if (currentTime - otpSentTime > 120) {
             const errObj = new Error('otp timeout')
             errObj.status = 400
             reject(errObj)//if otp timeout
