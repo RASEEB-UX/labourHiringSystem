@@ -16,6 +16,7 @@ const Availablenav = () => {
                     <div className="showselect select-box">
                         <select>
                         <option value="">Filter By Category</option>
+                      
                                 <option value="Mason">Mason</option>
                                 <option value="Labourer">Labourer</option>
                                 <option value="Tile Work">Tile Work</option>
@@ -31,7 +32,7 @@ const Availablenav = () => {
                 </div>
                 <div className={`navbar-links  ${isOpen ? 'activator' : ''}`}>
                         <ul>
-                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/">Homes</Link></li>
                             <li><Link to="/aboutus">About us</Link></li>
                             <li><Link to="/register">Register</Link></li>
                             <li><Link to="/features">Features</Link></li>
@@ -39,7 +40,7 @@ const Availablenav = () => {
                         </ul>
                         <div className="select-box">
                         <select>
-                        <option value="">Filter By Category</option>
+                        <option value="">Filters By Category</option>
                                 <option value="Mason">Mason</option>
                                 <option value="Labourer">Labourer</option>
                                 <option value="Tile Work">Tile Work</option>

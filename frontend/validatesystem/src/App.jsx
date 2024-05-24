@@ -62,10 +62,13 @@ function App() {
   return (
     <div className='bg-[#FEFAF6]'>
       <Navbar />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <div className='h-[90vh] flex justify-center items-center'>
+          <div className='text-2xl'>Loading... <span className="loading loading-spinner loading-xs"></span></div>
+        </div>}>
         <Routes>
           <Route exact path="/" element={<Home />} />
-        
+
 
           <Route exact path='/update' element={<Update />} />
           <Route exact path='/loginform' element={<LoginForm />} />
@@ -75,7 +78,7 @@ function App() {
             <Route exact path='/userRegister' element={<UserRegister />} />
           </Route>
           <Route exact path='/updateform' element={<Updateform />} />
-          <Route exact path="/available/:ct" element={<CardComponent />} />
+          <Route exact path="/available" element={<CardComponent />} />
           <Route exact path='/signin' element={<SignInButton />} />
           <Route exact path='/loginwithpassword' element={<UserWorkerLogin />} />
           <Route exact path='/emailotpform' element={<EmailOtpVerification />} />
@@ -84,7 +87,7 @@ function App() {
 
             <Route exact path='/adminpage' element={<AdminPage />} >
               <Route exact path='/adminpage' element={<AdminMainPage />} />
-              
+
               <Route exact path='/adminpage/getallfeedbacks' element={<AllFeedBackMessages />} />
               <Route exact path='/adminpage/advertisement' element={<Advertisement />} />
               <Route exact path='/adminpage/getpendingrequests' element={<PendingRequestsComponent />} />

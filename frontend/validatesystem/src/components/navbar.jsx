@@ -7,35 +7,11 @@ const Navbar = () => {
   const [userType, setUsertype] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
-  const [ispath, setpath] = useState(false)
-  const changenav = () => {
-    let vwidth = window.innerWidth
-    let path = window.location.pathname
-    var userpath = /^\/available.*$/
-    //console.log('path is ', path)
-    // console.log('width is ', vwidth)
-    //console.log('width is correct', vwidth <= 512)
-    //console.log('path is correct', userpath.test(path))
-    if (vwidth <= 512 && userpath.test(path)) {
-      setpath(true)
-    }
-    else {
-      setpath(false)
-    }
-  }
-  window.addEventListener('resize', () => {
-    changenav()
-  })
-  useEffect(() => {
-    console.log("hi")
-    setIsOpen(false)
-    changenav()
-  }, [location])
   const handleChange = (e) => {//function to change user type
     console.log('sign in option is', e.target.value)
-  
-    navigate(`/${e.target.value}page`,{
-     state:{ userChoice:e.target.value}
+
+    navigate(`/${e.target.value}page`, {
+      state: { userChoice: e.target.value }
     })
     setUsertype('')
 
@@ -46,8 +22,7 @@ const Navbar = () => {
     else
       return navigate('/register')
   }
-  if (ispath)
-    return null
+ 
   return (
     <nav className=" border  bg-[#5755FE] border-black bg-white-700 min-h-[10vh] shadow-sm shadow-black text-white relative ">
       <div className="flex px-3 lg:px-12  h-[10vh] justify-between items-center  ">
@@ -72,7 +47,7 @@ const Navbar = () => {
             <Link to="/features" className=" hover:text-blue-700">Features</Link>
           </li>
           <li>
-            <Link to="/available/all" className=" hover:text-blue-700">Availability</Link>
+            <Link to="/available" className=" hover:text-blue-700">Availability</Link>
           </li>
           <li>
             <Link to="/update" className=" hover:text-blue-700">update</Link>
@@ -87,7 +62,7 @@ const Navbar = () => {
           </select>
         </div>
       </div>
-      <div className={`${isOpen ? 'h-[400px]  ' : 'h-[0px] '} overflow-hidden  bg-[#5755FE] z-index-[10] w-full absolute top-[10vh] border border-red-800 shadow-md text-[1.4rem] transition-all duration-500`}>
+      <div className={`${isOpen ? 'h-[400px]  ' : 'h-[0px] '} overflow-hidden  bg-[#5755FE] z-index-[10] w-full absolute top-[10vh]  shadow-md text-[1.4rem] transition-all duration-500`}>
         <ul className=" w-full flex py-4 flex-col justify-center items-center gap-6">
           <li>
             <Link to="/" className=" hover:text-blue-900">Home</Link>
@@ -97,7 +72,7 @@ const Navbar = () => {
             <Link to="/features" className=" hover:text-blue-900">Features</Link>
           </li>
           <li>
-            <Link to="/available/all" className=" hover:text-blue-9">Availability</Link>
+            <Link to="/available" className=" hover:text-blue-9">Availability</Link>
           </li>
           <li>
             <Link to="/update" className=" hover:text-blue-9">Update</Link>
@@ -116,7 +91,7 @@ const Navbar = () => {
               <option value="user">User</option>
               <option value="worker">Worker</option>
             </select>
-          </li>
+          </li>      
         </ul>
 
       </div>
