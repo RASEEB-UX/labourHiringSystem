@@ -7,7 +7,7 @@ function Home() {
     const advertisementStore = useSelector((state) => state.advertisementStore)
     const advertisementPresent = advertisementStore.advertisementPresent
     const authStatus = useSelector((state) => state.userStore.authStatus)
-    const userStore= useSelector((state) => state.userStore)
+    const userStore = useSelector((state) => state.userStore)
     console.log(advertisementStore)
     // Generate random stars
     const [registerAs, setRegisterAs] = useState('')
@@ -29,15 +29,15 @@ function Home() {
             e.preventDefault()
             if (!authStatus) {
                 return setApiErr('Sign In First')
-             
-            }   
+
+            }
             const data = new FormData(e.target)
             let formData = {}
             data.entries().forEach(([key, value]) => {
                 formData[key] = value
             })
-            formData.mobile=userStore.userMobile
-            formData.username=userStore.user.username
+            formData.mobile = userStore.userMobile
+            formData.username = userStore.user.username
             console.log(formData)
             setApiErr('')
             setMsg('')
@@ -77,7 +77,6 @@ function Home() {
                     <p className='my-2'>We connect laborers with employers. Find skilled workers for your projects or register as a laborer
                         to get hired.</p>
                     <p className='my-2'>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                    <div className="location bg-blue-600 px-5 py-4 rounded-full shadow-md">Your Location</div>
                 </div>
                 <div className='w-full carousel rounded-box  sm:w-[50%] h-[70vh] sm:h-[90vh] '>
                     <div className="carousel-item w-full">
@@ -96,14 +95,15 @@ function Home() {
                         <img src="../../worker5.png" className="w-full" alt="Tailwind CSS Carousel component" />
                     </div>
                 </div>
-                <select value={registerAs} name='registrationChoice' className="hidden sm:block absolute  px-12  bottom-11 py-3 text-2xl bg-[#2563EB] my-4 rounded-md" onChange={handleChange}>
-                    <option value=''>Register As</option>
-                    <option value='user'>User</option>
-                    <option value='worker'>Worker</option>
-                </select>
+
+
             </section>
-        <a href="tel:919797798243">call me</a>
-           <div><marquee behavior="" direction="" className='bg-blue-300 p-4 rounded-sm  text-black text-2xl'>For Any Bussiness Related Queries Mail us at labourHiring@gmail.com or 97971234556</marquee></div>
+            <div className='flex justify-center items-center my-2'> <select value={registerAs} name='registrationChoice' className="   px-12  bottom-11 py-3 text-2xl bg-[#2563EB] my-4 rounded-md" onChange={handleChange}>
+                <option value=''>Register As</option>
+                <option value='user'>User</option>
+                <option value='worker'>Worker</option>
+            </select></div>
+            <div><marquee behavior="" direction="" className='bg-blue-300 p-4 rounded-sm  text-black text-2xl'>For Any Bussiness Related Queries Mail us at labourHiring@gmail.com or 97971234556</marquee></div>
             <section className='my-3'>
                 <h3 className='text-center text-2xl my-2'>How It Works</h3>
                 <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 h-fit p-3'>
@@ -126,10 +126,10 @@ function Home() {
                     {apiErr && <small className='text-red-700 text-2xl text-center my-1'>{apiErr}</small>}
                     {msg && <small className='text-black text-2xl text-center my-1'>{msg}</small>}
                     {apiSuccess && <small className='text-green-700 text-center my-1'>{apiSuccess}</small>}
-                    <form className="" onSubmit={handleSubmit}>
+                    <form className="" onSubmit={handleSubmit} >
                         <div className="flex flex-col py-3">
-                            <label htmlFor="problem" className="text-sm text-black">Message</label>
-                            <textarea id="problem" name="message" rows="4" className="input py-2 border border-black"></textarea>
+                            <label htmlFor="problem" className="text-sm text-black py-3">Message</label>
+                            <textarea id="problem" name="message" rows="4" className="input py-[6rem] ring"></textarea>
                         </div>
                         <button type="submit" className="btn w-full p-3 bg-blue-500 rounded-md my-2">{submitting ? "Submitting Feedback..." : "Submit"}</button>
                     </form>

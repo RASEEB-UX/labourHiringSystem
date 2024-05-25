@@ -6,6 +6,8 @@ import { addAdvertisement } from './redux/advertisementSlice.js'
 import axios from 'axios';
 import Navbar from './components/navbar';
 import { fetchWorkerData } from './redux/workerSlice';
+import AboutUs from './components/aboutUs.jsx';
+import Faqs from './components/Faqs.jsx';
 const EmailOtpVerification = React.lazy(() => import('./components/emailOtpVerification'));
 const LoginForm = React.lazy(() => import('./components/loginForm'));
 const Home = React.lazy(() => import('./components/home'));
@@ -68,8 +70,8 @@ function App() {
         </div>}>
         <Routes>
           <Route exact path="/" element={<Home />} />
-
-
+          <Route exact path="/faqs" element={<Faqs/>} />
+          <Route exact path="/aboutus" element={<AboutUs />} />
           <Route exact path='/update' element={<Update />} />
           <Route exact path='/loginform' element={<LoginForm />} />
           {/* protected component for registration pages of user and worker*/}

@@ -44,14 +44,15 @@ const Navbar = () => {
             <Link to="/" className=" hover:text-blue-700">Home</Link>
           </li>
           <li>
-            <Link to="/features" className=" hover:text-blue-700">Features</Link>
+            <Link to="/aboutus" className=" hover:text-blue-700">About Us</Link>
+          </li>
+          <li>
+            <Link to="/faqs" className=" hover:text-blue-700">FAQS</Link>
           </li>
           <li>
             <Link to="/available" className=" hover:text-blue-700">Availability</Link>
           </li>
-          <li>
-            <Link to="/update" className=" hover:text-blue-700">update</Link>
-          </li>
+         
         </ul>
         <div className='hidden lg:block'>
           <select name="" id="" value={userType} className=' px-6 py-2 bg-red-300 text-white rounded-full text-2xl' onChange={handleChange}>
@@ -62,21 +63,21 @@ const Navbar = () => {
           </select>
         </div>
       </div>
-      <div className={`${isOpen ? 'h-[400px]  ' : 'h-[0px] '} overflow-hidden  bg-[#5755FE] z-index-[10] w-full absolute top-[10vh]  shadow-md text-[1.4rem] transition-all duration-500`}>
+      <div className={`${isOpen ? 'h-[65vh]  ' : 'h-[0px] '} overflow-hidden  bg-[#5755FE] z-index-[10] w-full absolute top-[10vh]  shadow-md text-[1.4rem] transition-all duration-500`}>
         <ul className=" w-full flex py-4 flex-col justify-center items-center gap-6">
           <li>
             <Link to="/" className=" hover:text-blue-900">Home</Link>
-          </li>
-
-          <li>
-            <Link to="/features" className=" hover:text-blue-900">Features</Link>
           </li>
           <li>
             <Link to="/available" className=" hover:text-blue-9">Availability</Link>
           </li>
           <li>
-            <Link to="/update" className=" hover:text-blue-9">Update</Link>
+            <Link to="/aboutus" className=" hover:text-blue-700">About Us</Link>
           </li>
+          <li>
+            <Link to="/faqs" className=" hover:text-blue-700">FAQS</Link>
+          </li>
+          
           <li className='w-full px-3'>
             <select name="userType" id="" value={userType} className='w-full m-auto px-2 py-2 rounded-md text-center text-black ' onChange={handleChange}>
               <option value="" className=''>Sign In</option>

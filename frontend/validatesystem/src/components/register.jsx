@@ -145,7 +145,7 @@ function Register() {
       </div>
       <div className='min-h-[70vh] sm:min-h-[90vh]  min-w-[50%] sm:min-w-[50%] flex justify-center items-center'>
         <div className="registerholder shadow-sm my-2 border border-black text-black mx-auto min-h-[90vh] bg-[#FFFFFF] p-3 w-full max-w-sm flex flex-col justify-center items-center">
-          <h2 className='text-black my-1 tracking-wide font-semibold'>Registration Form</h2>
+          <h2 className='text-black my-1 tracking-wide font-semibold'>Worker Registration Form</h2>
           {apiError && <p className="error-message text-red-700">{apiError}</p>}
           {apiSuccess && <p className="error-message text-green-600">{apiSuccess}</p>}
           {msg && <p className="infomessage">{msg}</p>}

@@ -137,7 +137,7 @@ function UserRegister() {
       </div>
       <div className='w-full sm:w-[50%]'>
         <div className="registerholder shadow-md my-3 border border-black text-black mx-auto min-h-[80vh] bg-[#FFFF] p-3 w-full max-w-sm flex flex-col justify-center items-center">
-          <h2 className='text-black my-1 tracking-wide font-semibold'>Registration Form</h2>
+          <h2 className='text-black my-1 tracking-wide font-semibold'>User Registration Form</h2>
           {apiMsg && <p className="error-message">{apiMsg}</p>}
           {apiErr && <p className="error-message text-red-700 text-center">{apiErr}</p>}
           {msg && <p className="infomessage">{msg}</p>}
