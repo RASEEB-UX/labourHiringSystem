@@ -1,6 +1,7 @@
 import { useState, React } from 'react'
 //4000003560000008
 import axios from 'axios'
+import ImageCarosel from './imageCarosel'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 function Home() {
@@ -78,26 +79,27 @@ function Home() {
                         to get hired.</p>
                     <p className='my-2'>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
                 </div>
-                <div className='w-full carousel rounded-box  sm:w-[50%] h-[70vh] sm:h-[90vh] '>
-                    <div className="carousel-item w-full">
-                        <img src="../../worker3.png" className="w-full" alt="Tailwind CSS Carousel component" />
-                    </div>
-                    <div className="carousel-item w-full">
-                        <img src="../../worker2.png" className="w-full" alt="Tailwind CSS Carousel component" />
-                    </div>
-                    <div className="carousel-item w-full">
-                        <img src="../../worker1.png" className="w-full" alt="Tailwind CSS Carousel component" />
-                    </div>
-                    <div className="carousel-item w-full">
-                        <img src="../../worker4.png" className="w-full" alt="Tailwind CSS Carousel component" />
-                    </div>
-                    <div className="carousel-item w-full">
-                        <img src="../../worker5.png" className="w-full" alt="Tailwind CSS Carousel component" />
+                <div className='w-full flex justify-center items-center  sm:w-[50%] min-h-[90vh] '>
+                    <div className=' carousel rounded-box   h-[90vh] w-full '>
+                        <div className="carousel-item w-full">
+                            <img src="../../worker3.png" className="w-full" alt="Tailwind CSS Carousel component" />
+                        </div>
+                        <div className="carousel-item w-full">
+                            <img src="../../worker2.png" className="w-full" alt="Tailwind CSS Carousel component" />
+                        </div>
+                        <div className="carousel-item w-full">
+                            <img src="../../worker1.png" className="w-full" alt="Tailwind CSS Carousel component" />
+                        </div>
+                        <div className="carousel-item w-full">
+                            <img src="../../worker4.png" className="w-full" alt="Tailwind CSS Carousel component" />
+                        </div>
+                        <div className="carousel-item w-full">
+                            <img src="../../worker5.png" className="w-full" alt="Tailwind CSS Carousel component" />
+                        </div>
                     </div>
                 </div>
-
-
             </section>
+
             <div className='flex justify-center items-center my-2'> <select value={registerAs} name='registrationChoice' className="   px-12  bottom-11 py-3 text-2xl bg-[#2563EB] my-4 rounded-md" onChange={handleChange}>
                 <option value=''>Register As</option>
                 <option value='user'>User</option>

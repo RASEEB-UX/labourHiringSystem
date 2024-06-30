@@ -9,13 +9,14 @@ const workerSlice = createSlice({
     initialState: {
         workers: [],
         rejected: false,
-        pending: false,
+        pending: true,
         empty: false
     },
     reducers: {
         addWorker: (state, action) => {
             state.workers.unshift(action.payload);
             state.empty=false
+            state.pending=false
         },
         updateWorker: (state, action) => {
             console.log('update payload is', action.payload)
@@ -45,7 +46,8 @@ const workerSlice = createSlice({
             }),
             builder.addCase(fetchWorkerData.rejected, (state, action) => {
 
-                state.rejected = true
+                state.rejected = true,
+                state.pending=false
             })
     }
 })

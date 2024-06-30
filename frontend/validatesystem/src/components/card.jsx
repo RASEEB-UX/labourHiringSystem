@@ -7,6 +7,7 @@ import { FaPhone } from 'react-icons/fa'
 function Card() {
     const navigate = useNavigate();
     const data = useSelector((state) => state.workerStore.workers);
+    const isPending = useSelector((state) => state.workerStore.pending);
     const authStatus = useSelector((state) => state.userStore.authStatus);
     console.log(data)
     const [empty, setEmpty] = useState(false);
@@ -14,7 +15,6 @@ function Card() {
     const [users, setUsers] = useState([]);
     const [selectval, setselect] = useState("")
     const [notfound, setNotFound] = useState(false)
-
     const findbycategory = (a) => {
         console.log('inside findBy')
         a = a.toLowerCase()
@@ -58,6 +58,10 @@ function Card() {
         setNotFound(false)
         setUsers(res)
     }
+    if(isPending)
+        return <div className='h-[90vh] flex justify-center items-center gap-2'>
+           <div className='text-2xl'>Loading Data plz wait... <span className="loading loading-spinner loading-xs"></span></div>
+        </div>
     if (isEmpty) {
         return (
             <div className='flex  mx-auto items-center justify-center  text-black p-5 my-3 w-[20rem] text-center min-h-[90vh]'>
