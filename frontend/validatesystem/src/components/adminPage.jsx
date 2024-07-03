@@ -12,7 +12,7 @@ const AdminPage = () => {
   const [openSidebar, setIsSidebarOpen] = useState(false);
   const userEmail = useSelector((state) => state.userStore.userEmail)
   const advertisementStore = useSelector((state) => state.advertisementStore)
-  const advertisementId=advertisementStore.advertisementObj._id
+  const advertisementId = advertisementStore.advertisementObj._id
   console.log(advertisementId)
   const dispatch = useDispatch()
   const addAdminData = async () => {
@@ -35,7 +35,7 @@ const AdminPage = () => {
   const handleRemoveAdvertisement = async () => {
     try {
       console.log(advertisementId)
-      const response = await axios.delete('https://labourhiringsystem-1.onrender.com/api/advertisement/removeAdvertisement', { data:{id:advertisementId }})
+      const response = await axios.delete('https://labourhiringsystem-1.onrender.com/api/advertisement/removeAdvertisement', { data: { id: advertisementId } })
       console.log(response.data)
       alert('Adevrtisement Removed Successfully')
       dispatch(removeAdvertisement())
@@ -82,10 +82,7 @@ const AdminPage = () => {
                 <td><FaComment size={23} /></td>
                 <td><Link to={{ pathname: '/adminpage/getpendingrequests' }} state={{ userChoice: 'admin' }} className=" hover:text-black    py-2 px-4 block">Pending Requests</Link></td>
               </tr>
-              <tr>
-                <td><FaCog size={23} /></td>
-                <td><Link to={{ pathname: '/adminpage' }} state={{ userChoice: 'admin' }} className=" hover:text-black    py-2 px-4 block">Settings</Link></td>
-              </tr>
+             
             </tbody>
           </table>
         </div>

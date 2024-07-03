@@ -16,7 +16,7 @@ function WorkerProfilePage() {
         <img src="../../slide1.jpg" alt="" className='bg-cover  bg-no-repeat' />
       </div>
       <div className='w-full sm:w-[50%] min-h-[90vh] sm:h-[90vh] flex justify-center items-center'>
-        <div className="card w-full max-w-sm px-7 border border-green-700 bg-[#ffff] shadow-md rounded-md hover:bg-[#5755FE] transition-all duration-700">
+        <div className="card w-full max-w-sm px-7 border border-green-700 bg-[#ffff] shadow-md rounded-md hover:bg-purple-400 transition-all duration-700">
           <img src={user.photo} alt="" className='w-20 h-20 rounded-full my-3 mx-auto border border-black shadow-sm' />
           <div className="cardbody text-center py-8 my-1">
             <h3 className='text-3xl'>Worker Profile</h3>

@@ -1,0 +1,50 @@
+.slider-container {
+    position: relative;
+    overflow: auto;
+    width: 400px;
+    height: 90vh;
+    border: 2px solid black;
+}
+
+.slider {
+    position: relative;
+   
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.pics{
+    position: absolute;
+}
+.slide.active {
+    opacity: 1;
+}
+
+.slide:nth-child(1) {
+    background-image: url("../../worker3.png");
+}
+
+.slide:nth-child(2) {
+    background-image: url("../../worker2.png");
+}
+
+.slide:nth-child(3) {
+    background-image: url("../../worker1.png");
+}
+
+.slide:nth-child(4) {
+    background-image: url("../../worker4.png");
+}
+
+.slide:nth-child(5) {
+    background-image: url("../../worker5.png");
+}

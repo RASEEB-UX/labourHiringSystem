@@ -81,6 +81,7 @@ const userController = async (req, res) => {
     }
 }
 const loginController = async (req, res) => {
+    
     try {
         const {mobile,password,userType } = req.body;
         if (!mobile || !password || !userType)
@@ -90,6 +91,7 @@ const loginController = async (req, res) => {
             return res.status(404).json({ message: 'user not found' })
         if (userExists.userType !== userType)
             return res.status(400).json({ message: 'invalid userType' })
+        console.log(req.body)
         const isPasswordCorrect = await bcrypt.compare(password, userExists.password)
         if (!isPasswordCorrect)
             return res.status(400).json({ message: "invalid credientials" })
