@@ -26,7 +26,7 @@ function WorkerProfilePage() {
             <h2 className='p-2'>Skills: {user.category}</h2>
             <h2 className='p-2'>Mobile: {user.mobile}</h2>
           </div>
-          <button className='w-full p-2 rounded-md text-white text-2xl bg-blue-600 my-2' onClick={() => navigate('/updateform' )}>Update </button>
+          <button className='w-full p-2 rounded-md text-white text-2xl bg-blue-600 my-2' onClick={() => navigate({ pathname: '/signin' }, { state: { navigateUrl: '/updateform' } })}>Update </button>
         </div>
       </div>
     </div> 
