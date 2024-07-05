@@ -104,7 +104,7 @@ function Updateform() {
                     <img src="../../slide1.jpg" alt="" className='bg-transparent mix-blend-multiply' />
                 </div>
                 <div className="registerholder  w-full sm:w-[50%] my-3  text-black mx-auto min-h-[80vh]    flex flex-col justify-center items-center">
-                    <div className='w-full max-w-sm  border  border-black shadow-md  p-12 text-center'>
+                    <div className='w-full max-w-sm  border  border-black shadow-md rounded-md shadow-black  p-12 text-center'>
                         <h2 className='text-black my-1 tracking-wide font-semibold'>Updation Form</h2>
                         {apiErr && <p className="apiErr-message text-red-700 text-center">{apiErr}</p>}
                         {msg && <p className="infomessage text-black text-center">{msg}</p>}
@@ -126,8 +126,10 @@ function Updateform() {
                                 <option value="Slab Work">Slab work</option>
                                 <option value="Carpenter">Carpenter</option>
                             </select>
+                            
                             {errors.category && <small className='text-red-700 text-center'>{errors.category}</small>}
-                            <input type="submit" value={isSubmitting?"Submitting....":"Update"} className='bg-[#017EF4]  my-2 px-4 py-2 w-full rounded-md shadow-md' />
+                            <button className='w-full p-2 rounded-md text-white bg-blue-600 my-2' onClick={() => navigate({ pathname: '/signin' }, { state: { navigateUrl: '/updateform' } })}>Update Mobile</button>
+                            <input type="submit" value={isSubmitting?"Submitting....":"Update Profile"} className='bg-[#017EF4]  my-2 px-4 py-2 w-full rounded-md shadow-md text-white' />
                         </form>
                     </div>
                 </div>

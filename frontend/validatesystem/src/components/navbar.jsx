@@ -22,10 +22,10 @@ const Navbar = () => {
     else
       return navigate('/register')
   }
- 
+
   return (
-    <nav className=" border  bg-[#5755FE] border-black bg-white-700 min-h-[10vh] shadow-sm shadow-black text-white relative ">
-      <div className="flex px-3 lg:px-12  h-[10vh] justify-between items-center  ">
+    <nav className="border  bg-[#5755FE] border-black bg-white-700   shadow-sm shadow-black text-white relative ">
+      <div className="flex px-3 lg:px-12  h-[10vh] max-h-[60px] justify-between items-center  ">
         {/* Logo */}
         <div className="ml-1 flex items-center justify-center  ">
           <img src="../../bigicon.jpg" alt="Logo" className="w-[50px] h-[50px] rounded-full mx-2 hover:scale-[1.5] transition duration-700" />
@@ -52,7 +52,7 @@ const Navbar = () => {
           <li>
             <Link to="/available" className=" hover:text-blue-700">Availability</Link>
           </li>
-         
+
         </ul>
         <div className='hidden lg:block'>
           <select name="" id="" value={userType} className=' px-6 py-2 bg-red-300 text-white rounded-full text-2xl' onChange={handleChange}>
@@ -63,7 +63,8 @@ const Navbar = () => {
           </select>
         </div>
       </div>
-      <div className={`${isOpen ? 'h-[65vh]  ' : 'h-[0px] '} overflow-hidden  bg-[#5755FE] z-index-[10] w-full absolute top-[10vh]  shadow-md text-[1.4rem] transition-all duration-500`}>
+     
+      <div className={`${isOpen ? 'h-[65vh]  ' : 'h-[0px] '} overflow-hidden  bg-[#5755FE] z-index-[20] w-full absolute top-[10vh]  shadow-md text-[1.4rem] transition-all duration-500`}>
         <ul className=" w-full flex py-4 flex-col justify-center items-center gap-6">
           <li>
             <Link to="/" className=" hover:text-blue-900">Home</Link>
@@ -77,7 +78,7 @@ const Navbar = () => {
           <li>
             <Link to="/faqs" className=" hover:text-blue-700">FAQS</Link>
           </li>
-          
+
           <li className='w-full px-3'>
             <select name="userType" id="" value={userType} className='w-full m-auto px-2 py-2 rounded-md text-center text-black ' onChange={handleChange}>
               <option value="" className=''>Sign In</option>
@@ -92,9 +93,9 @@ const Navbar = () => {
               <option value="user">User</option>
               <option value="worker">Worker</option>
             </select>
-          </li>      
+          </li>
         </ul>
-
+       
       </div>
     </nav>
   );

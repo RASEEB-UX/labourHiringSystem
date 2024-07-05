@@ -34,7 +34,7 @@ function App() {
   const dispatch = useDispatch();
   const fetchAdvertisement = async () => {
     try {
-      const advertisementResponse = await axios.get('http://localhost:8000/api/advertisement/getAdvertisement')
+      const advertisementResponse = await axios.get('https://labourhiringsystem-1.onrender.com/api/advertisement/getAdvertisement')
       console.log(advertisementResponse)
       dispatch(addAdvertisement(advertisementResponse.data.advertisement))
     }
