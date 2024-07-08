@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaCheckCircle, FaUsers, FaMoneyBillWave } from 'react-icons/fa';
+import { FaCheckCircle, FaUsers, FaMoneyBillWave, FaSearch } from 'react-icons/fa';
 
 
 function Home() {
@@ -15,6 +15,7 @@ function Home() {
 
     const [registerAs, setRegisterAs] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [applicationStatus, setApplicationStatus] = useState('');
     const [msg, setMsg] = useState('');
     const [apiErr, setApiErr] = useState('');
     const [apiSuccess, setApiSuccess] = useState('');
@@ -63,6 +64,26 @@ function Home() {
             }
         }
     };
+    const handleCheckApplicationStatus = async (e) => {
+        try {
+            console.log('hi')
+            e.preventDefault()
+
+            const formDataObj = new FormData(e.target)
+            console.log(formDataObj)
+            let formData = {}
+            formDataObj.entries().forEach(([key, value]) => {
+                formData[key] = value
+            })
+            console.log(formData)
+            const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/workers/checkapplicationstatus', formData)
+            setApplicationStatus(response.data.Status)
+            console.log(response)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
         <div>
@@ -151,6 +172,18 @@ function Home() {
                     </div>
                 </div>
             </section>
+            <h2 className='text-2xl font-bold text-center my-1'>Check Application Status</h2>
+            <div className='flex justify-center items-center my-2 px-1'>
+                <div className='w-full max-w-[400px] aspect-video flex justify-center items-center'>
+                    <form action="" onSubmit={handleCheckApplicationStatus} className=' p-4 size-full border shadow-md shadow-black border-black flex justify-center items-center'>
+                        <small>{applicationStatus}</small>
+                        <input type="tel" name='mobileNumber' className="input px-9 border border-black rounded-full" placeholder="Phone Number" />
+                        <div className='border flex justify-center items-center border-black -ml-20 bg-green-500 w-20 p-2 rounded-full'>
+                            <button type='submit' className=''><FaSearch className='text-3xl' /></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <h4 className='text-black my-2 text-2xl text-center'>Have Some Questions?</h4>
             <div className='contactUs grid grid-cols-1 sm:grid-cols-2 gap-3 p-2 my-3'>
                 <div className='flex justify-center text-2xl items-center flex-col text-black my-2 p-4'>
@@ -170,7 +203,7 @@ function Home() {
                     </form>
                 </div>
             </div>
-           
+
             <div className='footer bg-black text-white flex justify-around items-center flex-wrap w-full gap-4 my-4'>
                 <div className="footerLeftSide text-center p-5 text-2xl">
                     <h2>FAQs</h2>

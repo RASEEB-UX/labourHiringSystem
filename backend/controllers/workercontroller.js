@@ -139,10 +139,27 @@ const updateController = async (req, res) => {
     res.status(500).json({ sucess: false, message: "something went wrong" })
   }
 }
+const checkApplicationStatus = async (req, res) => {
+  try {
+    const { mobileNumber } = req.body.mobileNumber
+    const isPending = await pendingRequestModel.findOne({ mobile: mobileNumber })
+    if (isPending)
+      return res.status(200).json({ status: "Application Pending...." })
+    const isApproved = await workerModel.findOne({ mobile: mobileNumber })
+    if (isApproved)
+      return res.status(200).json({ status: "Application Approved" })
+    else
+      return res.status(200).json({ status: "Application Rejected" })
+  }
+  catch (err) {
+    console.log(err)
+    return res.status(500).json({ message: "Server Error" })
+  }
+}
 module.exports = {
   usersController,
   registerController,
   updateController,
-  loginController
-
+  loginController,
+  checkApplicationStatus
 }

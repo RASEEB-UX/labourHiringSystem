@@ -18,8 +18,8 @@ const sendOtp = (receipientEmail) => {
             service: 'gmail',
             pool: true,
             auth: {
-                user: 'alladinmagic12@gmail.com',
-                pass: "jodl tazp phkq xjlr"
+                user: 'protonium789@gmail.com',
+                pass: "erwr fkkh gwqj ngla"
             }
         });
         const mailOptions = {
