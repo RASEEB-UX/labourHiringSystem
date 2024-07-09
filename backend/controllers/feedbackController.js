@@ -6,13 +6,9 @@ const addfeedback = async (req, res) => {
     let feedback = ''
     try {
         const { mobile, message } = req.body
+        console.log(req.body)
         if (!mobile || !message)
             return res.status(400).json({ message: "InSufficient Data" })
-        const [userExists, workerExists,adminExists] = await Promise.all([
-            userModel.findOne({ mobile: req.body.mobile }),
-            workerModel.findOne({ mobile: req.body.mobile }),
-            adminModel.findOne({mobile:req.body.mobile})
-        ])
         feedback = await feedbackModel.create(req.body)
         return res.status(200).json({ message: "FeedBack Added Successfully" })
     }

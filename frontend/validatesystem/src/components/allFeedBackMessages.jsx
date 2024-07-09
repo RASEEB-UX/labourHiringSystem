@@ -44,8 +44,7 @@ useEffect(() =>{
     <div className='p-2 min-h-[80vh] border-2  flex  flex-col min-[1030px]:flex-row flex-wrap  justify-around items-center gap-4'>
       {feedbackStore.feedBacks.length !== 0 && feedbackStore.feedBacks.map((item, key) => (
         <div key={key} className='w-full max-w-md flex hover:scale-105 transition-all duration-700 hover:bg-blue-700 hover:text-white rounded-lg justify-center  p-7  min-h-32  bg-white shadow-black shadow-md items-center flex-col border border-black'>
-          <h2 className='p-3 text-2xl '>userName :{" "}{item.username}</h2>
-          <h2 className='p-3  text-2xl '>mobile :{" "}{item.mobile}</h2>
+          <h2 className='p-3  text-2xl '>User Mobile :{" "}{item.mobile}</h2>
           <h2 className='p-3'>message :{" "}{item.message}</h2>
           <button className='w-full p-4 bg-violet-500 rounded-md text-white text-2xl' onClick={()=>handleDeleteFeedback(item._id)}>Delete Feedback</button>
         </div>
