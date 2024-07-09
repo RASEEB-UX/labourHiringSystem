@@ -5,8 +5,8 @@ const adminModel = require('../model/adminModel')
 const addfeedback = async (req, res) => {
     let feedback = ''
     try {
-        const { mobile, username, message } = req.body
-        if (!mobile || !username || !message)
+        const { mobile, message } = req.body
+        if (!mobile || !message)
             return res.status(400).json({ message: "InSufficient Data" })
         const [userExists, workerExists,adminExists] = await Promise.all([
             userModel.findOne({ mobile: req.body.mobile }),
