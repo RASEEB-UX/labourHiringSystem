@@ -77,7 +77,7 @@ function Home() {
             })
             console.log(formData)
             const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/workers/checkapplicationstatus', formData)
-            setApplicationStatus(response.data.Status)
+            setApplicationStatus(response.data.status)
             console.log(response)
         }
         catch (err) {
@@ -175,12 +175,14 @@ function Home() {
             <h2 className='text-2xl font-bold text-center my-1'>Check Application Status</h2>
             <div className='flex justify-center items-center my-2 px-1'>
                 <div className='w-full max-w-[400px] aspect-video flex justify-center items-center'>
-                    <form action="" onSubmit={handleCheckApplicationStatus} className=' p-4 size-full border shadow-md shadow-black border-black flex justify-center items-center'>
-                        <small>{applicationStatus}</small>
-                        <input type="tel" name='mobileNumber' className="input px-9 border border-black rounded-full" placeholder="Phone Number" />
+                    <form action="" onSubmit={handleCheckApplicationStatus} className=' p-4 size-full border flex-col shadow-md shadow-black border-black flex justify-center items-center'>
+                        <small className='my-2 font-bold'>{applicationStatus}</small>
+                       <div className='flex justify-normal items-center'>
+                       <input type="tel" name='mobileNumber' className="input px-9 border border-black rounded-full" placeholder="Phone Number" />
                         <div className='border flex justify-center items-center border-black -ml-20 bg-green-500 w-20 p-2 rounded-full'>
                             <button type='submit' className=''><FaSearch className='text-3xl' /></button>
                         </div>
+                       </div>
                     </form>
                 </div>
             </div>

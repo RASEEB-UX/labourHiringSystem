@@ -148,8 +148,8 @@ const checkApplicationStatus = async (req, res) => {
     const isApproved = await workerModel.findOne({ mobile: mobileNumber })
     if (isApproved)
       return res.status(200).json({ status: "Application Approved" })
-    else
-      return res.status(200).json({ status: "Application Rejected" })
+    else if(!isPending || !isApproved)
+      return res.status(200).json({ status: "Application Rejected or not present" })
   }
   catch (err) {
     console.log(err)
