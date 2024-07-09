@@ -16,6 +16,7 @@ function Home() {
     const [registerAs, setRegisterAs] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [applicationStatus, setApplicationStatus] = useState('');
+    const [checkingStatus, setCheckingStatus] = useState('');
     const [msg, setMsg] = useState('');
     const [apiErr, setApiErr] = useState('');
     const [apiSuccess, setApiSuccess] = useState('');
@@ -66,6 +67,8 @@ function Home() {
     };
     const handleCheckApplicationStatus = async (e) => {
         try {
+            setApplicationStatus('')
+            setCheckingStatus('')
             console.log('hi')
             e.preventDefault()
 
@@ -76,15 +79,18 @@ function Home() {
                 formData[key] = value
             })
             console.log(formData)
-            const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/workers/checkapplicationstatus', formData)
-            setApplicationStatus(response.data.status)
+            setCheckingStatus('Checking Status...')
+            const response = await axios.post('https://labourhiringsystem-1.onrender.com/api/workers/checkapplicationstatus',formData)
+            setCheckingStatus('')
+            setApplicationStatus(response.data.status)    
             console.log(response)
         }
         catch (err) {
+            setCheckingStatus('')
+            setApplicationStatus('')  
             console.log(err)
         }
     }
-
     return (
         <div>
             {advertisementPresent && (
@@ -177,12 +183,13 @@ function Home() {
                 <div className='w-full max-w-[400px] aspect-video flex justify-center items-center'>
                     <form action="" onSubmit={handleCheckApplicationStatus} className=' p-4 size-full border flex-col shadow-md shadow-black border-black flex justify-center items-center'>
                         <small className='my-2 font-bold'>{applicationStatus}</small>
-                       <div className='flex justify-normal items-center'>
-                       <input type="tel" name='mobileNumber' className="input px-9 border border-black rounded-full" placeholder="Phone Number" />
-                        <div className='border flex justify-center items-center border-black -ml-20 bg-green-500 w-20 p-2 rounded-full'>
-                            <button type='submit' className=''><FaSearch className='text-3xl' /></button>
+                        <small className='my-2 font-bold'>{checkingStatus}</small>
+                        <div className='flex justify-normal items-center'>
+                            <input type="tel" name='mobileNumber' className="input px-9 border border-black rounded-full" placeholder="Phone Number" />
+                            <div className='border flex justify-center items-center border-black -ml-20 bg-green-500 w-20 p-2 rounded-full'>
+                                <button type='submit' className=''><FaSearch className='text-3xl' /></button>
+                            </div>
                         </div>
-                       </div>
                     </form>
                 </div>
             </div>

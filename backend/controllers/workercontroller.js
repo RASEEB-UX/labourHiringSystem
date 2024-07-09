@@ -141,15 +141,20 @@ const updateController = async (req, res) => {
 }
 const checkApplicationStatus = async (req, res) => {
   try {
-    const { mobileNumber } = req.body.mobileNumber
+    const { mobileNumber } = req.body
+    if(!mobileNumber)
+      return res.status(200).json({message:"Mobile Number Required"})
     const isPending = await pendingRequestModel.findOne({ mobile: mobileNumber })
     if (isPending)
       return res.status(200).json({ status: "Application Pending...." })
     const isApproved = await workerModel.findOne({ mobile: mobileNumber })
     if (isApproved)
       return res.status(200).json({ status: "Application Approved" })
-    else if(!isPending || !isApproved)
-      return res.status(200).json({ status: "Application Rejected or not present" })
+    else if (!isPending && !isApproved)
+    {
+      return res.status(200).json({ status: "Application Rejected or not present"})
+    }
+     
   }
   catch (err) {
     console.log(err)
