@@ -62,7 +62,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className='bg-[#FEFAF6] border-2 border-red-900 max-w-[1920px]  m-auto'>
+    <div className='bg-[#FEFAF6]  max-w-[1920px]  m-auto'>
       <Navbar />
       <Suspense fallback={
         <div className='h-[90vh] flex justify-center items-center'>

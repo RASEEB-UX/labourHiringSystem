@@ -102,14 +102,14 @@ function EmailOtpVerification() {
                                 <input type="tel" name='otp' placeholder='place enter otp here' required value={otp} onChange={handleChange} className='w-full p-4 rounded-full border border-black' /> : null
                             }
                             {
-                                otpErr ? null : <button type="submit" disabled={buttonClicked} className={`w-full rounded-md shadow-sm py-3 my-5 bg-[#1D4ED8] ${buttonClicked && ' text-gray-300'}`} onClick={isOtpSent ? verifyOtp : requestOtp}>
+                                otpErr ? null : <button type="submit" disabled={buttonClicked} className={`w-full text-xl text-white rounded-md shadow-sm py-3 my-5 bg-[#1D4ED8] ${buttonClicked && ' text-gray-300'}`} onClick={isOtpSent ? verifyOtp : requestOtp}>
                                     {isOtpSent ? "Submit" : "Request otp"}
                                 </button>
                             }
 
 
                             {//if otp error occurs show this button for resending otp
-                                otpErr && <button onClick={requestOtpAgain} className={`w-full rounded-md shadow-sm py-3 my-5 bg-[#1D4ED8] ${buttonClicked && ' text-gray-300'} `}>Request Again</button>
+                                otpErr && <button onClick={requestOtpAgain} className={`w-full text-xl text-white rounded-md shadow-sm py-3 my-5 bg-[#1D4ED8] ${buttonClicked && ' text-gray-300'} `}>Request Again</button>
                             }
                         </div>
 

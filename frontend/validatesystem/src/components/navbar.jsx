@@ -24,7 +24,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="border  bg-[#5755FE] border-black bg-white-700   shadow-sm shadow-black text-white relative ">
+    <nav className="border  z-10 bg-[#5755FE] border-black bg-white-700   shadow-sm shadow-black text-white relative ">
       <div className="flex px-3 lg:px-12  h-[10vh] max-h-[60px] justify-between items-center  ">
         {/* Logo */}
         <div className="ml-1 flex items-center justify-center  ">
@@ -64,7 +64,7 @@ const Navbar = () => {
         </div>
       </div>
      
-      <div className={`${isOpen ? 'h-[65vh]  ' : 'h-[0px] '} overflow-hidden  bg-[#5755FE] z-index-[20] w-full absolute top-[10vh]  shadow-md text-[1.4rem] transition-all duration-500`}>
+      <div className={`${isOpen ? 'h-[90vh] w-full  ' : 'h-[90vh] w-0 '} overflow-hidden  bg-[#5755FE] z-index-[10] absolute top-[9vh]  shadow-md text-[1.4rem] transition-all duration-300`}>
         <ul className=" w-full flex py-4 flex-col justify-center items-center gap-6">
           <li>
             <Link to="/" className=" hover:text-blue-900">Home</Link>

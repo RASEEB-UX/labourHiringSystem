@@ -94,8 +94,8 @@ function Home() {
     return (
         <div>
             {advertisementPresent && (
-                <div>
-                    <marquee className='bg-blue-300 p-4 rounded-sm text-black text-2xl'>
+                <div  className='z-0'>
+                    <marquee className='bg-blue-300 p-4 rounded-sm text-black text-2xl '>
                         {advertisementStore.advertisementObj.advertisement}
                     </marquee>
                 </div>

@@ -48,7 +48,7 @@ const AdminPage = () => {
     <div className="flex h-[90vh] bg-[#E9EEFA]" >
       {/* Sidebar */}
       <div
-        className={`w-0 min-[700px]:w-[15rem]  bg-[#2E53DA] text-gray-100 h-full transition-all rounded-lg
+        className={`w-0 min-[700px]:w-[15rem]  bg-[#5755FE] text-gray-100 h-full transition-all rounded-lg
   ${openSidebar ? ' absolute w-[15rem]' : ''}`}
       >
         <div className="p-4">

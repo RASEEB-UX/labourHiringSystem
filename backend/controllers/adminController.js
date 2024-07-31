@@ -1,11 +1,15 @@
 const express = require('express')
 const adminModel = require('../model/adminModel')
+const workerModel = require('../model/workerModel')
+const userModel = require('../model/userModel')
+const feedBackModel = require('../model/feedbackModel')
+const pendingRequestModel = require('../model/pendingRequestsModel')
 const cloudinary = require('cloudinary').v2
 const util = require('util')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { sendOtp, verifyOtp } = require('../assets/email')
-const giveUserId =require('../assets/revealUserId')
+const giveUserId = require('../assets/revealUserId')
 const signToken = util.promisify(jwt.sign)
 const verifyJsonToken = util.promisify(jwt.verify)
 const loginController = async (req, res) => {
@@ -65,7 +69,7 @@ const registerController = async (req, res) => {
             req.body.photo = req.body.imagepath
             req.body.photoid = null
         }
-        req.body.user='admin'
+        req.body.user = 'admin'
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         req.body.password = hashedPassword
         //  console.log('photo is ', photo)
@@ -118,7 +122,7 @@ const verifyOtpController = async (req, res) => {
         //get device id by deviceUUid package
         const expiryTime = 23 * 24 * 60 * 60
         const uniqueUserId = await giveUserId(req.useragent)
-        const authToken = await signToken({ username: userExists.username,mobile:userExists.mobile, email: userExists.email, userType: userExists.userType, userId: uniqueUserId }, process.env.access_Token_Key, { expiresIn: expiryTime })
+        const authToken = await signToken({ username: userExists.username, mobile: userExists.mobile, email: userExists.email, userType: userExists.userType, userId: uniqueUserId }, process.env.access_Token_Key, { expiresIn: expiryTime })
         console.log('signed authToken is', authToken)
         const cookieOptions = {
             httpOnly: true,
@@ -126,7 +130,7 @@ const verifyOtpController = async (req, res) => {
             sameSite: 'none',
             maxAge: expiryTime * 1000,
         }
-        return res.status(200).cookie('authToken', authToken, cookieOptions).json({username: userExists.username,mobile:userExists.mobile, email: userExists.email,userType: userExists.userType, message: "user authenticated ,token issued" })
+        return res.status(200).cookie('authToken', authToken, cookieOptions).json({ username: userExists.username, mobile: userExists.mobile, email: userExists.email, userType: userExists.userType, message: "user authenticated ,token issued" })
     }
     catch (err) {
         console.log(err.status)
@@ -134,10 +138,25 @@ const verifyOtpController = async (req, res) => {
         return res.status(err.status).json({ message: err.message })
     }
 }
+const websiteAnalytics = async (req, res) => {
+    try {
+        const workers = await workerModel.find().count()
+        const users = await userModel.find().count()
+        const feedBacks = await feedBackModel.find().count()
+        const pendingRequests = await pendingRequestModel.find().count()
+        return res.status(200).json({ workers, users, feedBacks, pendingRequests } )
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).json({ message: "Server error" })
+    }
+
+}
 module.exports = {
     loginController,
     getDataController,
     registerController,
     sendOtpController,
-    verifyOtpController
+    verifyOtpController,
+    websiteAnalytics
 }

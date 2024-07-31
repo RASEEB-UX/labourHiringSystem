@@ -60,6 +60,8 @@ function UserWorkerLogin() {
            console.log('response is',response.data.user)
             setSubmitting(false)
             setApiSuccess("Authenticated")
+            navigate(`/${formData.userType}page`,{state:{userChoice:formData.userType}})
+        
             setMsg('')
         }
         catch (err) {
