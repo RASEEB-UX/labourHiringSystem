@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials') // Jenkins credentials ID for Docker Hub
+        DOCKER_HUB_REPO = 'your-dockerhub-username/labour-hiring-system'
+        KUBECONFIG = '/path/to/kubeconfig' // Adjust the kubeconfig path
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Irfan-rather/labourHiringSystem.git'
+            }
+        }
+
+        stage('Build Docker Images') {
+            parallel {
+                stage('Build Backend Image') {
+                    steps {
+                        dir('backend') {
+                            sh '''
+                            docker build -t $DOCKER_HUB_REPO-backend:latest .
+                            echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin
+                            docker push $DOCKER_HUB_REPO-backend:latest
+                            '''
+                        }
+                    }
+                }
+                stage('Build Frontend Image') {
+                    steps {
+                        dir('frontend') {
+                            sh '''
+                            docker build -t $DOCKER_HUB_REPO-frontend:latest .
+                            echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin
+                            docker push $DOCKER_HUB_REPO-frontend:latest
+                            '''
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                export KUBECONFIG=$KUBECONFIG
+                kubectl apply -f k8s/database-deployment.yaml
+                kubectl apply -f k8s/database-service.yaml
+                kubectl apply -f k8s/backend-deployment.yaml
+                kubectl apply -f k8s/backend-service.yaml
+                kubectl apply -f k8s/frontend-deployment.yaml
+                kubectl apply -f k8s/frontend-service.yaml
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully.'
+        }
+        failure {
+            echo 'Pipeline execution failed.'
+        }
+    }
+}
