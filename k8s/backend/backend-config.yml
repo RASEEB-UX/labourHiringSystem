@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: labour-hiring-system
+data:
+  DB_URL: "mongodb://mongo-service:27017/labourHiringDB"
+  NODE_ENV: "production"
+
