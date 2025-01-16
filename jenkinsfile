@@ -41,7 +41,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Deploy to Kubernetes1') {
             steps {
                 sh '''
                 export KUBECONFIG=$KUBECONFIG
