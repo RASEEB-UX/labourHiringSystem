@@ -10,5 +10,6 @@ spec:
   - protocol: TCP
     port: 27017
     targetPort: 27017
-  clusterIP: None  # Headless service for stable DNS
+    nodePort: 30082
+type: NodePort # Headless service for stable DNS
 
