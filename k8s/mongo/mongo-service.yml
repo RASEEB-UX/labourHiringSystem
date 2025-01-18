@@ -11,5 +11,5 @@ spec:
     port: 27017
     targetPort: 27017
     nodePort: 30082
-type: NodePort # Headless service for stable DNS
+  type: NodePort # Headless service for stable DNS
 
