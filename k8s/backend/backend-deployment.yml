@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: irfan845/labourhiringsystem-backend:latest
+        image:  irfan845/labour-hiring-system-backend:latest
         ports:
         - containerPort: 5000
         envFrom:
