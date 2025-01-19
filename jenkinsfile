@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials') // Jenkins credentials ID for Docker Hub
-        DOCKER_HUB_REPO = 'your-dockerhub-username/labour-hiring-system'
-        KUBECONFIG = '/path/to/kubeconfig' // Adjust the kubeconfig path
+        DOCKER_HUB_CREDENTIALS = credentials('docker-cred') // Docker Hub credentials in Jenkins
+        DOCKER_HUB_REPO = 'irfan845/labour-hiring-system'
+        KUBECONFIG = '/home/irfan/.kube/config' // Path to kubeconfig
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/Irfan-rather/labourHiringSystem.git' 
+                git branch: 'main', url: 'https://github.com/Irfan-rather/labourHiringSystem.git'
             }
         }
 
@@ -20,8 +20,9 @@ pipeline {
                     steps {
                         dir('backend') {
                             sh '''
+                            docker buildx create --use || echo "Buildx already exists"
                             docker build -t $DOCKER_HUB_REPO-backend:latest .
-                            echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin
+                            echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
                             docker push $DOCKER_HUB_REPO-backend:latest
                             '''
                         }
@@ -31,27 +32,76 @@ pipeline {
                     steps {
                         dir('frontend') {
                             sh '''
+                            docker buildx create --use || echo "Buildx already exists"
                             docker build -t $DOCKER_HUB_REPO-frontend:latest .
-                            echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin
+                            echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
                             docker push $DOCKER_HUB_REPO-frontend:latest
+                            '''
+                        }
+                    }
+                }
+                stage('Build MongoDB Image') {
+                    steps {
+                        dir('mongo') {
+                            sh '''
+                            docker buildx create --use || echo "Buildx already exists"
+                            docker build -t $DOCKER_HUB_REPO-mongo:latest .
+                            echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
+                            docker push $DOCKER_HUB_REPO-mongo:latest
                             '''
                         }
                     }
                 }
             }
         }
+         
+        stage('Deploy to Kubernetes') {
+            stages {
+                stage('Create Namespace') {
+                    steps {
+                        sh '''
+                        export KUBECONFIG=$KUBECONFIG
+                        kubectl apply -f k8s/namespace.yml
+                        '''
+                    }
+                }
 
-        stage('Deploy to Kubernetes1') {
-            steps {
-                sh '''
-                export KUBECONFIG=$KUBECONFIG
-                kubectl apply -f k8s/database-deployment.yaml
-                kubectl apply -f k8s/database-service.yaml
-                kubectl apply -f k8s/backend-deployment.yaml
-                kubectl apply -f k8s/backend-service.yaml
-                kubectl apply -f k8s/frontend-deployment.yaml
-                kubectl apply -f k8s/frontend-service.yaml
-                '''
+                stage('Deploy MongoDB') {
+                    steps {
+                        dir('k8s/mongo') {
+                            sh '''
+                            export KUBECONFIG=$KUBECONFIG
+                            kubectl apply -f mongo-deployment.yml 
+                            kubectl apply -f mongo-service.yml 
+                            '''
+                        }
+                    }
+                }
+
+                stage('Deploy Backend') {
+                    steps {
+                        dir('k8s/backend') {
+                            sh '''
+                            export KUBECONFIG=$KUBECONFIG
+                            kubectl apply -f backend-deployment.yml
+                            kubectl apply -f backend-service.yml 
+                            kubectl apply -f backend-config.yml
+                            '''
+                        }
+                    }
+                }
+
+                stage('Deploy Frontend') {
+                    steps {
+                        dir('k8s/frontend') {
+                            sh '''
+                            export KUBECONFIG=$KUBECONFIG
+                            kubectl apply -f frontend-deployment.yml
+                            kubectl apply -f frontend-service.yml 
+                            '''
+                        }
+                    }
+                }
             }
         }
     }
