@@ -4,6 +4,7 @@ services:
   frontend:
     build:
       context: ./frontend
+    image: raseebriyazkhan/labourhiringsystem-frontend:latest  # Add image tag
     ports:
       - "3000:80"  # Expose frontend on port 3000
     networks:
@@ -16,6 +17,7 @@ services:
   backend:
     build:
       context: ./backend
+    image: raseebriyazkhan/labourhiringsystem-backend:latest  # Add image tag
     ports:
       - "5000:5000"  # Expose backend on port 5000
     networks:
@@ -27,7 +29,9 @@ services:
       - mongo
 
   mongo:
-    image: mongo:latest
+    build:
+      context: ./mongo
+    image: raseebriyazkhan/mongo:latest  # Tag the mongo image
     ports:
       - "27017:27017"  # Expose MongoDB on port 27017
     networks:
@@ -42,4 +46,3 @@ networks:
 volumes:
   mongo-data:
     driver: local
-
