@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mongo
-        image: irfan845/labour-hiring-system-mongo:latest
+        image: labourHiringSystem/myapp:v2.0
         ports:
         - containerPort: 27017
         volumeMounts:
