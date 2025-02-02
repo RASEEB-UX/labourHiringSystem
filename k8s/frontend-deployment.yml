@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: labourHiringSystem/myapp:v2.0
+        image: raseebriyazkhan/labourHiringSystem:v2.0
         ports:
         - containerPort: 80
 
