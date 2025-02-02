@@ -4,9 +4,9 @@ services:
   frontend:
     build:
       context: ./frontend
-    image: raseebriyazkhan/labourhiringsystem-frontend:latest  # Add image tag
+    image: raseebriyazkhan/labourhiringsystem-frontend:v2.0  # Add version tag
     ports:
-      - "3000:80"  # Expose frontend on port 3000
+      - "3000:80"
     networks:
       - labour_network
     depends_on:
@@ -17,9 +17,9 @@ services:
   backend:
     build:
       context: ./backend
-    image: raseebriyazkhan/labourhiringsystem-backend:latest  # Add image tag
+    image: raseebriyazkhan/labourhiringsystem-backend:v2.0  # Add version tag
     ports:
-      - "5000:5000"  # Expose backend on port 5000
+      - "5000:5000"
     networks:
       - labour_network
     environment:
@@ -27,13 +27,17 @@ services:
       - MONGODB_URI=mongodb://mongo:27017/labourdb  # MongoDB URL for backend
     depends_on:
       - mongo
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      retries: 3
 
   mongo:
     build:
       context: ./mongo
-    image: raseebriyazkhan/mongo:latest  # Tag the mongo image
+    image: raseebriyazkhan/mongo:v2.0  # Add version tag
     ports:
-      - "27017:27017"  # Expose MongoDB on port 27017
+      - "27017:27017"
     networks:
       - labour_network
     volumes:
@@ -46,3 +50,4 @@ networks:
 volumes:
   mongo-data:
     driver: local
+
