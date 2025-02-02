@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    image: raseebriyazkhan/labourhiringsystem-frontend:v2.0  # Add version tag
+    ports:
+      - "3000:80"
+    networks:
+      - labour_network
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:5000  # Backend API URL for frontend
+
+  backend:
+    build:
+      context: ./backend
+    image: raseebriyazkhan/labourhiringsystem-backend:v2.0  # Add version tag
+    ports:
+      - "5000:5000"
+    networks:
+      - labour_network
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/labourdb  # MongoDB URL for backend
+    depends_on:
+      - mongo
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      retries: 3
+
+  mongo:
+    build:
+      context: ./mongo
+    image: raseebriyazkhan/mongo:v2.0  # Add version tag
+    ports:
+      - "27017:27017"
+    networks:
+      - labour_network
+    volumes:
+      - mongo-data:/data/db  # Persist MongoDB data between restarts
+
+networks:
+  labour_network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+
