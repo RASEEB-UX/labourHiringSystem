@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: raseebriyazkhan/labourHiringSystem:v2.0
+        image: raseebriyazkhan/labourhiringsystem:v2.0
         imagePullPolicy: Always
         ports:
         - containerPort: 80
