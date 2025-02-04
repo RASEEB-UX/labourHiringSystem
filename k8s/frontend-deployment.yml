@@ -4,7 +4,7 @@ metadata:
   name: frontend-deployment
   namespace: labour-hiring-system
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: frontend
