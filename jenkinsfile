@@ -10,6 +10,7 @@ pipeline {
     stages {
         stage("debug"){
             steps{
+                sh 'env'
                 sh "whoami"
                 sh 'ls -lah /home/amaanriaz/workspace/labour-hiring-system@tmp'
             }
