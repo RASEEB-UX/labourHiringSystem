@@ -18,15 +18,13 @@ pipeline {
         stage("Static Code Analysis") {
             steps {
                 withCredentials([string(credentialsId: "SonarQube", variable: 'SONAR_AUTH_TOKEN')]) {
-                        sh '''
-                        sonar-scanner -X \
-                        -Dsonar.projectKey=labour-hiring-system \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=${SONAR_AUTH_TOKEN}
-                         
-                        '''
-                    }
+                    sh '''
+                    sonar-scanner -X \
+                    -Dsonar.projectKey=labour-hiring-system \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=http://localhost:9000 \
+                    -Dsonar.login=${SONAR_AUTH_TOKEN}
+                    '''
                 }
             }
         }
@@ -52,21 +50,21 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: "GitHubCred", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
-                        git config user.email "raseebriyazkhan@gmail.com"
-                        git config user.name "$GITHUB_USERNAME"
-                        git checkout main
+                    git config user.email "raseebriyazkhan@gmail.com"
+                    git config user.name "$GITHUB_USERNAME"
+                    git checkout main
 
-                        # Replace image tag in Kubernetes deployment files
-                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/frontend-deployment.yml
-                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/backend-deployment.yml
-                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/mongo-deployment.yml
+                    # Replace image tag in Kubernetes deployment files
+                    sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/frontend-deployment.yml
+                    sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/backend-deployment.yml
+                    sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/mongo-deployment.yml
 
-                        git add k8s/frontend-deployment.yml k8s/backend-deployment.yml k8s/mongo-deployment.yml
-                        git commit -m "Updated deployment images to version ${BUILD_NUMBER}"
-                        git push https://$GIT_USER:$GIT_PASS@github.com/$GITHUB_USERNAME/$GITHUB_REPO_NAME HEAD:main
+                    git add k8s/frontend-deployment.yml k8s/backend-deployment.yml k8s/mongo-deployment.yml
+                    git commit -m "Updated deployment images to version ${BUILD_NUMBER}"
+                    git push https://$GIT_USER:$GIT_PASS@github.com/$GITHUB_USERNAME/$GITHUB_REPO_NAME HEAD:main
                     '''
                 }
             }
         }
     }
-
+}
