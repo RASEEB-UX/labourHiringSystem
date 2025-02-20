@@ -17,14 +17,15 @@ pipeline {
 
         stage("Static Code Analysis") {
             steps {
-                withCredentials([string(credentialsId: "SonarQube", variable: 'SONAR_AUTH_TOKEN')])
-                 dir("${WORKSPACE}/labour-hiring-system") {
-                    sh '''
-                        sonar-scanner -X \
-                        -Dsonar.projectKey=labourhiringsystem \
-                        -Dsonar.host.url=$SONARQUBE_URL \
-                        -Dsonar.login=$SONAR_AUTH_TOKEN
-                    '''
+                withCredentials([string(credentialsId: "SonarQube", variable: 'SONAR_AUTH_TOKEN')]) {
+                    dir("${WORKSPACE}/labour-hiring-system") {
+                        sh '''
+                            sonar-scanner -X \
+                            -Dsonar.projectKey=labourhiringsystem \
+                            -Dsonar.host.url=$SONARQUBE_URL \
+                            -Dsonar.login=$SONAR_AUTH_TOKEN
+                        '''
+                    }
                 }
             }
         }
