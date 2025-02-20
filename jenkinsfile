@@ -1,117 +1,69 @@
 pipeline {
-    agent any
-
-    environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-cred') // Docker Hub credentials in Jenkins
-        DOCKER_HUB_REPO = 'irfan845/labour-hiring-system'
-        KUBECONFIG = '/home/irfan/.kube/config' // Path to kubeconfig
-    }
+    agent { label "wsl-agent" }
 
     stages {
-        stage('Checkout Code') {
+        stage("git checkout") {
             steps {
-                git branch: 'main', url: 'https://github.com/Irfan-rather/labourHiringSystem.git'
+                git branch: "main", credentialsId: "GitHubCred", url: "https://github.com/RASEEB-UX/labourHiringSystem.git"
+                echo "git checkout successfully"
             }
         }
 
-        stage('Build Docker Images') {
-            parallel {
-                stage('Build Backend Image') {
-                    steps {
-                        dir('backend') {
-                            sh '''
-                            docker buildx create --use || echo "Buildx already exists"
-                            docker build -t $DOCKER_HUB_REPO-backend:latest .
-                            echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
-                            docker push $DOCKER_HUB_REPO-backend:latest
-                            '''
-                        }
-                    }
-                }
-                stage('Build Frontend Image') {
-                    steps {
-                        dir('frontend') {
-                            sh '''
-                            docker buildx create --use || echo "Buildx already exists"
-                            docker build -t $DOCKER_HUB_REPO-frontend:latest .
-                            echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
-                            docker push $DOCKER_HUB_REPO-frontend:latest
-                            '''
-                        }
-                    }
-                }
-                stage('Build MongoDB Image') {
-                    steps {
-                        dir('mongo') {
-                            sh '''
-                            docker buildx create --use || echo "Buildx already exists"
-                            docker build -t $DOCKER_HUB_REPO-mongo:latest .
-                            echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
-                            docker push $DOCKER_HUB_REPO-mongo:latest
-                            '''
-                        }
-                    }
+        stage("static-code-analysis") {
+            environment {
+                SONARURL = "http://localhost:9000/"
+            }
+            steps {
+                withCredentials([string(credentialsId: "SonarQube", variable: 'SONAR_AUTH_TOKEN')]) {
+                    sh '''
+                        sonar-scanner \
+                        -Dsonar.projectKey=my-backend-project \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=a1dc7ad3784cc39c51a363a1f6b9ad03611c8c53
+                    '''
                 }
             }
         }
-         
-        stage('Deploy to Kubernetes') {
-            stages {
-                stage('Create Namespace') {
-                    steps {
-                        sh '''
-                        export KUBECONFIG=$KUBECONFIG
-                        kubectl apply -f k8s/namespace.yml
-                        '''
-                    }
-                }
 
-                stage('Deploy MongoDB') {
-                    steps {
-                        dir('k8s/mongo') {
-                            sh '''
-                            export KUBECONFIG=$KUBECONFIG
-                            kubectl apply -f mongo-deployment.yml 
-                            kubectl apply -f mongo-service.yml 
-                            '''
-                        }
-                    }
-                }
+        stage("Docker-compose") {
+            steps {
+                sh "docker-compose build"
+                echo "Successfully created containers"
+            }
+        }
 
-                stage('Deploy Backend') {
-                    steps {
-                        dir('k8s/backend') {
-                            sh '''
-                            export KUBECONFIG=$KUBECONFIG
-                            kubectl apply -f backend-deployment.yml
-                            kubectl apply -f backend-service.yml 
-                            kubectl apply -f backend-config.yml
-                            '''
-                        }
-                    }
-                }
-
-                stage('Deploy Frontend') {
-                    steps {
-                        dir('k8s/frontend') {
-                            sh '''
-                            export KUBECONFIG=$KUBECONFIG
-                            kubectl apply -f frontend-deployment.yml
-                            kubectl apply -f frontend-service.yml 
-                            '''
-                        }
-                    }
+        stage("login and push") {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'DockerCred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                    sh "docker-compose push"
                 }
             }
         }
-    }
 
-    post {
-        success {
-            echo 'Pipeline executed successfully.'
-        }
-        failure {
-            echo 'Pipeline execution failed.'
+        stage("update the k8s files") {
+            environment {
+                GITHUB_REPO_NAME = "labourHiringSystem"
+                GITHUB_USERNAME = "RASEEB-UX"
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: "GitHubCred", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    sh '''
+                        git config user.email "raseebriyazkhan@gmail.com"
+                        git config user.name "$GITHUB_USERNAME"
+                        git checkout main
+
+                        # Update image tag in all three deployment files
+                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" frontend-deployment.yml
+                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" backend-deployment.yml
+                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" mongo-deployment.yml
+
+                        git add frontend-deployment.yml backend-deployment.yml mongo-deployment.yml
+                        git commit -m "Updated deployment images to version ${BUILD_NUMBER}"
+                        git push https://$GIT_USER:$GIT_PASS@github.com/$GITHUB_USERNAME/$GITHUB_REPO_NAME HEAD:main
+                    '''
+                }
+            }
         }
     }
 }
