@@ -18,7 +18,7 @@ pipeline {
         stage("Static Code Analysis") {
             steps {
                 withCredentials([string(credentialsId: "SonarQube", variable: 'SONAR_AUTH_TOKEN')]) {
-                    dir("${workspace}/labour-hiring-system") {
+                     {
                         sh '''
                         sonar-scanner -X \
                         -Dsonar.projectKey=labour-hiring-system \
