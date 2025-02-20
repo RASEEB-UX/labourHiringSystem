@@ -18,12 +18,14 @@ pipeline {
         stage("Static Code Analysis") {
             steps {
                 withCredentials([string(credentialsId: "SonarQube", variable: 'SONAR_AUTH_TOKEN')]) {
-                    dir("${WORKSPACE}/labour-hiring-system") {
+                    dir("${workspace}/labour-hiring-system") {
                         sh '''
-                            sonar-scanner -X \
-                            -Dsonar.projectKey=labourhiringsystem \
-                            -Dsonar.host.url=$SONARQUBE_URL \
-                            -Dsonar.login=$SONAR_AUTH_TOKEN
+                        sonar-scanner -X \
+                        -Dsonar.projectKey=labour-hiring-system \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=${SONAR_AUTH_TOKEN}
+                         
                         '''
                     }
                 }
