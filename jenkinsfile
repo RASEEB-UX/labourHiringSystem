@@ -8,6 +8,12 @@ pipeline {
     }
 
     stages {
+        stage("debug"){
+            steps{
+                sh "whoami"
+                sh 'ls -lah /home/amaanriaz/workspace/labour-hiring-system@tmp'
+            }
+        }
         stage("Git Checkout") {
             steps {
                 git branch: "main", credentialsId: "GitHubCred", url: "https://github.com/RASEEB-UX/labourHiringSystem.git"
