@@ -1,51 +1,51 @@
 pipeline {
     agent { label "wsl-agent" }
 
+    environment {
+        SONARQUBE_URL = "http://localhost:9000"
+        GITHUB_REPO_NAME = "labourHiringSystem"
+        GITHUB_USERNAME = "RASEEB-UX"
+    }
+
     stages {
-        stage("git checkout") {
+        stage("Git Checkout") {
             steps {
                 git branch: "main", credentialsId: "GitHubCred", url: "https://github.com/RASEEB-UX/labourHiringSystem.git"
-                echo "git checkout successfully"
+                echo "Git checkout successful"
             }
         }
 
-        stage("static-code-analysis") {
-            environment {
-                SONARURL = "http://localhost:9000/"
-            }
+        stage("Static Code Analysis") {
             steps {
                 withCredentials([string(credentialsId: "SonarQube", variable: 'SONAR_AUTH_TOKEN')]) {
                     sh '''
                         sonar-scanner \
-                        -Dsonar.projectKey=my-backend-project \
-                        -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=a1dc7ad3784cc39c51a363a1f6b9ad03611c8c53
+                        -Dsonar.projectKey=labourhiringsystem \
+                        -Dsonar.host.url=$SONARQUBE_URL \
+                        -Dsonar.login=$SONAR_AUTH_TOKEN
                     '''
                 }
             }
         }
 
-        stage("Docker-compose") {
+        stage("Build Docker Images") {
             steps {
                 sh "docker-compose build"
-                echo "Successfully created containers"
+                echo "Docker images built successfully"
             }
         }
 
-        stage("login and push") {
+        stage("Login & Push Docker Images") {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DockerCred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
                     sh "docker-compose push"
+                    echo "Docker images pushed to Docker Hub"
                 }
             }
         }
 
-        stage("update the k8s files") {
-            environment {
-                GITHUB_REPO_NAME = "labourHiringSystem"
-                GITHUB_USERNAME = "RASEEB-UX"
-            }
+        stage("Update Kubernetes Deployment Files") {
             steps {
                 withCredentials([usernamePassword(credentialsId: "GitHubCred", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
@@ -53,12 +53,12 @@ pipeline {
                         git config user.name "$GITHUB_USERNAME"
                         git checkout main
 
-                        # Update image tag in all three deployment files
-                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" frontend-deployment.yml
-                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" backend-deployment.yml
-                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" mongo-deployment.yml
+                        # Replace image tag in Kubernetes deployment files
+                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/frontend-deployment.yml
+                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/backend-deployment.yml
+                        sed -i "s/replaceImage/${BUILD_NUMBER}/g" k8s/mongo-deployment.yml
 
-                        git add frontend-deployment.yml backend-deployment.yml mongo-deployment.yml
+                        git add k8s/frontend-deployment.yml k8s/backend-deployment.yml k8s/mongo-deployment.yml
                         git commit -m "Updated deployment images to version ${BUILD_NUMBER}"
                         git push https://$GIT_USER:$GIT_PASS@github.com/$GITHUB_USERNAME/$GITHUB_REPO_NAME HEAD:main
                     '''
