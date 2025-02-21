@@ -8,6 +8,13 @@ pipeline {
     }
 
     stages {
+
+      stage("Git Checkout") {
+            steps {
+                git branch: "main", credentialsId: "GitHubCred", url: "https://github.com/RASEEB-UX/labourHiringSystem.git"
+                echo "Git checkout successful"
+            }
+        }
         stage("debug"){
             steps{
                 sh 'env'
@@ -15,14 +22,7 @@ pipeline {
                 sh 'ls -lah /home/amaanriaz/workspace/labour-hiring-system@tmp'
             }
         }
-        stage("Git Checkout") {
-            steps {
-                git branch: "main", credentialsId: "GitHubCred", url: "https://github.com/RASEEB-UX/labourHiringSystem.git"
-                echo "Git checkout successful"
-            }
-        }
-
-        stage("Static Code Analysis") {
+         stage("Static Code Analysis") {
             steps {
                 withCredentials([string(credentialsId: "SonarQube", variable: 'SONAR_AUTH_TOKEN')]) {
                     sh '''
