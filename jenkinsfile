@@ -13,6 +13,8 @@ pipeline {
             steps {
                 git branch: "main", credentialsId: "GitHubCred", url: "https://github.com/RASEEB-UX/labourHiringSystem.git"
                 echo "Git checkout successful"
+                sh "ls -l /bin/sh"
+
             }
         }
         stage("debug"){
